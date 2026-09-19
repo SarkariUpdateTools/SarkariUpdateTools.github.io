@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Age Calculator - Sarkari Update Tools</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #111827;
+            min-height: 100vh;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            position: relative;
+            background: #0d47a1;
+            color: white;
+            padding: 26px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-family: "Arial Black", "Trebuchet MS", Arial, sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            line-height: 1.1;
+            margin-bottom: 7px;
+            text-shadow: 0 2px 3px rgba(0,0,0,0.18);
+        }
+
+        header p {
+            font-size: 14px;
+            opacity: 0.92;
+            letter-spacing: 0.2px;
+        }
+
+
+        /* ================= YOUTUBE ================= */
+
+        .youtube-link {
+            position: absolute;
+            left: 22px;
+            top: 18px;
+
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 8px 12px;
+
+            background: white;
+            color: #111827;
+
+            border-radius: 8px;
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            transition: 0.2s;
+
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+
+        .youtube-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 14px rgba(0,0,0,0.20);
+        }
+
+        .youtube-icon {
+            width: 32px;
+            height: 23px;
+
+            background: #ff0000;
+
+            border-radius: 7px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .youtube-icon::after {
+            content: "";
+
+            width: 0;
+            height: 0;
+
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-left: 9px solid white;
+
+            margin-left: 2px;
+        }
+
+
+        /* ================= TELEGRAM ================= */
+
+        .telegram-link {
+            position: absolute;
+            right: 22px;
+            top: 18px;
+
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 8px 12px;
+
+            background: white;
+            color: #111827;
+
+            border-radius: 8px;
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            transition: 0.2s;
+
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+
+        .telegram-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 14px rgba(0,0,0,0.20);
+        }
+
+        .telegram-icon {
+            width: 32px;
+            height: 32px;
+
+            background: #229ED9;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+        }
+
+        .telegram-icon svg {
+            width: 19px;
+            height: 19px;
+            fill: white;
+        }
+
+
+        /* ================= CHANNEL TEXT ================= */
+
+        .youtube-text,
+        .telegram-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            line-height: 1.15;
+        }
+
+        .youtube-text small,
+        .telegram-text small {
+            font-size: 9px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .youtube-text strong,
+        .telegram-text strong {
+            font-size: 13px;
+            color: #111827;
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .container {
+            width: 92%;
+            max-width: 700px;
+            margin: 30px auto;
+        }
+
+        .back-home {
+            display: inline-block;
+            color: #0d47a1;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .back-home:hover {
+            text-decoration: underline;
+        }
+
+
+        /* ================= CARD ================= */
+
+        .card {
+            background: white;
+            border: 1px solid #e1e5ea;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+        }
+
+        .card h2 {
+            text-align: center;
+            font-size: 21px;
+            margin-bottom: 8px;
+        }
+
+        .card-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+
+        /* ================= FORM ================= */
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+
+        /* DATE INPUT */
+
+        .date-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .date-input {
+            width: 100%;
+            height: 42px;
+
+            padding: 9px 12px;
+            padding-right: 180px;
+
+            border: 1px solid #cfd6df;
+            border-radius: 7px;
+
+            font-size: 14px;
+            outline: none;
+
+            background: white;
+            color: #111827;
+        }
+
+        .date-input:focus {
+            border-color: #0d47a1;
+            box-shadow: 0 0 0 2px rgba(13,71,161,0.08);
+        }
+
+        .date-input::-webkit-calendar-picker-indicator {
+            opacity: 0;
+            position: absolute;
+            width: 0;
+            height: 0;
+            pointer-events: none;
+        }
+
+        .calendar-button {
+            position: absolute;
+            left: 125px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            width: 30px;
+            height: 30px;
+
+            border: none;
+            background: transparent;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            cursor: pointer;
+
+            font-size: 17px;
+            color: #111827;
+        }
+
+        .calendar-button:hover {
+            color: #0d47a1;
+        }
+
+
+        /* ================= BUTTONS ================= */
+
+        .button-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+        .btn {
+            flex: 1;
+
+            border: none;
+
+            padding: 12px 18px;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+        .calculate-btn {
+            background: #0d47a1;
+            color: white;
+        }
+
+        .calculate-btn:hover {
+            background: #083578;
+        }
+
+        .clear-btn {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        .clear-btn:hover {
+            background: #d1d5db;
+        }
+
+
+        /* ================= ERROR ================= */
+
+        .error {
+            display: none;
+
+            background: #fee2e2;
+            color: #b91c1c;
+
+            padding: 11px 12px;
+
+            border-radius: 7px;
+
+            font-size: 13px;
+
+            margin-top: 18px;
+        }
+
+
+        /* ================= RESULT ================= */
+
+        .result {
+            display: none;
+            margin-top: 25px;
+        }
+
+        .result-title {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .age-main {
+            background: #eef4ff;
+
+            border: 1px solid #d5e3ff;
+
+            border-radius: 10px;
+
+            padding: 20px;
+
+            text-align: center;
+
+            margin-bottom: 15px;
+        }
+
+        .age-main .big-age {
+            font-size: 30px;
+            font-weight: 700;
+
+            color: #0d47a1;
+
+            margin-bottom: 6px;
+        }
+
+        .age-main p {
+            color: #555;
+            font-size: 13px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .result-box {
+            background: #fafafa;
+
+            border: 1px solid #e1e5ea;
+
+            border-radius: 9px;
+
+            padding: 15px;
+
+            text-align: center;
+        }
+
+        .result-box .value {
+            font-size: 20px;
+            font-weight: 700;
+
+            color: #0d47a1;
+
+            margin-bottom: 5px;
+        }
+
+        .result-box .label {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .birthday-box {
+            margin-top: 12px;
+
+            background: #fff8e1;
+
+            border: 1px solid #ffe082;
+
+            border-radius: 9px;
+
+            padding: 15px;
+
+            text-align: center;
+        }
+
+        .birthday-box .birthday-title {
+            font-size: 14px;
+            font-weight: 600;
+
+            margin-bottom: 6px;
+        }
+
+        .birthday-box .birthday-text {
+            color: #555;
+            font-size: 13px;
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 600px) {
+
+            header {
+                padding: 22px 15px 25px;
+            }
+
+            header h1 {
+                font-size: 23px;
+                margin-top: 28px;
+            }
+
+            header p {
+                font-size: 13px;
+            }
+
+            .youtube-link {
+                left: 10px;
+                top: 10px;
+
+                padding: 7px 9px;
+                gap: 7px;
+
+                font-size: 12px;
+            }
+
+            .youtube-icon {
+                width: 28px;
+                height: 20px;
+                border-radius: 6px;
+            }
+
+            .youtube-icon::after {
+                border-top-width: 5px;
+                border-bottom-width: 5px;
+                border-left-width: 8px;
+            }
+
+            .telegram-link {
+                right: 10px;
+                top: 10px;
+
+                padding: 5px 8px;
+                gap: 6px;
+
+                font-size: 12px;
+            }
+
+            .telegram-icon {
+                width: 27px;
+                height: 27px;
+            }
+
+            .telegram-icon svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .youtube-text small,
+            .telegram-text small {
+                font-size: 8px;
+            }
+
+            .youtube-text strong,
+            .telegram-text strong {
+                font-size: 12px;
+            }
+
+            .container {
+                width: 94%;
+                margin: 25px auto;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .button-row {
+                flex-direction: column;
+            }
+
+            .result-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .calendar-button {
+                left: 125px;
+            }
+        }
+
+
+        @media (max-width: 400px) {
+
+            header h1 {
+                font-size: 21px;
+            }
+
+            .youtube-text small,
+            .telegram-text small {
+                display: none;
+            }
+
+            .youtube-link {
+                padding: 6px 8px;
+            }
+
+            .telegram-link {
+                padding: 5px 7px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+
+        <!-- YOUTUBE CHANNEL - LEFT -->
+
+        <a
+            href="https://www.youtube.com/@YourSarkariUpdate"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="youtube-link"
+        >
+
+            <span class="youtube-icon"></span>
+
+            <span class="youtube-text">
+
+                <small>
+                    Visit our YouTube Channel
+                </small>
+
+                <strong>
+                    Sarkari Update
+                </strong>
+
+            </span>
+
+        </a>
+
+
+        <!-- TELEGRAM CHANNEL - RIGHT -->
+
+        <a
+            href="https://t.me/YourSarkariUpdate"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="telegram-link"
+        >
+
+            <span class="telegram-icon">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+
+                    <path d="M21.8 3.2L18.7 20c-.2 1.2-.9 1.5-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.2-8.3c.4-.4-.1-.6-.6-.2L6.1 13.5 1.2 12c-1.1-.3-1.1-1 .2-1.5L20.5 3c.9-.3 1.7.2 1.3.2z"/>
+
+                </svg>
+
+            </span>
+
+
+            <span class="telegram-text">
+
+                <small>
+                    Join our Telegram Channel
+                </small>
+
+                <strong>
+                    Sarkari Update
+                </strong>
+
+            </span>
+
+        </a>
+
+
+        <!-- CENTER TITLE -->
+
+        <h1>
+            Age Calculator
+        </h1>
+
+        <p>
+            Calculate your exact age easily
+        </p>
+
+    </header>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="container">
+
+
+        <a
+            href="../index.html"
+            class="back-home"
+        >
+            ← Back to Home
+        </a>
+
+
+        <div class="card">
+
+
+            <h2>
+                Calculate Your Age
+            </h2>
+
+
+            <p class="card-subtitle">
+                Enter your date of birth to calculate your exact age.
+            </p>
+
+
+
+            <!-- DATE OF BIRTH -->
+
+            <div class="form-group">
+
+                <label for="dob">
+                    Date of Birth
+                </label>
+
+
+                <div class="date-wrapper">
+
+                    <input
+                        type="date"
+                        id="dob"
+                        class="date-input"
+                    >
+
+
+                    <button
+                        type="button"
+                        class="calendar-button"
+                        id="dobCalendar"
+                        aria-label="Open date picker"
+                    >
+                        📅
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CALCULATE AGE ON -->
+
+            <div class="form-group">
+
+                <label for="calculateDate">
+                    Calculate Age On
+                </label>
+
+
+                <div class="date-wrapper">
+
+                    <input
+                        type="date"
+                        id="calculateDate"
+                        class="date-input"
+                    >
+
+
+                    <button
+                        type="button"
+                        class="calendar-button"
+                        id="calculateCalendar"
+                        aria-label="Open date picker"
+                    >
+                        📅
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- BUTTONS -->
+
+            <div class="button-row">
+
+                <button
+                    class="btn calculate-btn"
+                    id="calculateBtn"
+                >
+                    Calculate Age
+                </button>
+
+
+                <button
+                    class="btn clear-btn"
+                    id="clearBtn"
+                >
+                    Clear
+                </button>
+
+            </div>
+
+
+
+            <!-- ERROR -->
+
+            <div
+                class="error"
+                id="errorBox"
+            ></div>
+
+
+
+            <!-- RESULT -->
+
+            <div
+                class="result"
+                id="result"
+            >
+
+
+                <div class="result-title">
+                    Your Exact Age
+                </div>
+
+
+
+                <div class="age-main">
+
+                    <div
+                        class="big-age"
+                        id="mainAge"
+                    >
+                        0 Years 0 Months 0 Days
+                    </div>
+
+                    <p>
+                        Exact age
+                    </p>
+
+                </div>
+
+
+
+                <div class="result-grid">
+
+
+                    <div class="result-box">
+
+                        <div
+                            class="value"
+                            id="totalYears"
+                        >
+                            0
+                        </div>
+
+                        <div class="label">
+                            Total Years
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="result-box">
+
+                        <div
+                            class="value"
+                            id="totalMonths"
+                        >
+                            0
+                        </div>
+
+                        <div class="label">
+                            Total Months
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="result-box">
+
+                        <div
+                            class="value"
+                            id="totalWeeks"
+                        >
+                            0
+                        </div>
+
+                        <div class="label">
+                            Approx. Weeks
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="result-box">
+
+                        <div
+                            class="value"
+                            id="totalDays"
+                        >
+                            0
+                        </div>
+
+                        <div class="label">
+                            Total Days
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="birthday-box">
+
+                    <div class="birthday-title">
+                        🎂 Next Birthday
+                    </div>
+
+                    <div
+                        class="birthday-text"
+                        id="birthdayText"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+
+        const dobInput =
+            document.getElementById("dob");
+
+
+        const calculateDate =
+            document.getElementById("calculateDate");
+
+
+        const dobCalendar =
+            document.getElementById("dobCalendar");
+
+
+        const calculateCalendar =
+            document.getElementById("calculateCalendar");
+
+
+        const calculateBtn =
+            document.getElementById("calculateBtn");
+
+
+        const clearBtn =
+            document.getElementById("clearBtn");
+
+
+        const errorBox =
+            document.getElementById("errorBox");
+
+
+        const result =
+            document.getElementById("result");
+
+
+        const mainAge =
+            document.getElementById("mainAge");
+
+
+        const totalYears =
+            document.getElementById("totalYears");
+
+
+        const totalMonths =
+            document.getElementById("totalMonths");
+
+
+        const totalWeeks =
+            document.getElementById("totalWeeks");
+
+
+        const totalDays =
+            document.getElementById("totalDays");
+
+
+        const birthdayText =
+            document.getElementById("birthdayText");
+
+
+
+        /* ================= TODAY ================= */
+
+        function getTodayString() {
+
+            const today = new Date();
+
+            return (
+                today.getFullYear() +
+                "-" +
+                String(today.getMonth() + 1).padStart(2, "0") +
+                "-" +
+                String(today.getDate()).padStart(2, "0")
+            );
+
+        }
+
+
+        const todayString =
+            getTodayString();
+
+
+        calculateDate.value =
+            todayString;
+
+
+        calculateDate.max =
+            todayString;
+
+
+        dobInput.max =
+            todayString;
+
+
+
+        /* ================= DATE PICKER ================= */
+
+        dobCalendar.addEventListener(
+            "click",
+            function () {
+
+                if (dobInput.showPicker) {
+
+                    dobInput.showPicker();
+
+                } else {
+
+                    dobInput.focus();
+
+                }
+
+            }
+        );
+
+
+        calculateCalendar.addEventListener(
+            "click",
+            function () {
+
+                if (calculateDate.showPicker) {
+
+                    calculateDate.showPicker();
+
+                } else {
+
+                    calculateDate.focus();
+
+                }
+
+            }
+        );
+
+
+
+        /* ================= LOCAL DATE ================= */
+
+        function getLocalDate(dateString) {
+
+            const parts =
+                dateString.split("-");
+
+
+            return new Date(
+                Number(parts[0]),
+                Number(parts[1]) - 1,
+                Number(parts[2])
+            );
+
+        }
+
+
+
+        /* ================= EXACT AGE ================= */
+
+        function calculateExactAge(
+            birthDate,
+            endDate
+        ) {
+
+            let years =
+                endDate.getFullYear() -
+                birthDate.getFullYear();
+
+
+            let months =
+                endDate.getMonth() -
+                birthDate.getMonth();
+
+
+            let days =
+                endDate.getDate() -
+                birthDate.getDate();
+
+
+            if (days < 0) {
+
+                months--;
+
+
+                const previousMonth =
+                    new Date(
+                        endDate.getFullYear(),
+                        endDate.getMonth(),
+                        0
+                    );
+
+
+                days +=
+                    previousMonth.getDate();
+
+            }
+
+
+            if (months < 0) {
+
+                years--;
+
+                months += 12;
+
+            }
+
+
+            return {
+                years,
+                months,
+                days
+            };
+
+        }
+
+
+
+        /* ================= NEXT BIRTHDAY ================= */
+
+        function calculateBirthday(
+            birthDate,
+            currentDate
+        ) {
+
+            let nextBirthday =
+                new Date(
+                    currentDate.getFullYear(),
+                    birthDate.getMonth(),
+                    birthDate.getDate()
+                );
+
+
+            if (nextBirthday < currentDate) {
+
+                nextBirthday =
+                    new Date(
+                        currentDate.getFullYear() + 1,
+                        birthDate.getMonth(),
+                        birthDate.getDate()
+                    );
+
+            }
+
+
+            const difference =
+                nextBirthday.getTime() -
+                currentDate.getTime();
+
+
+            const daysLeft =
+                Math.ceil(
+                    difference /
+                    (1000 * 60 * 60 * 24)
+                );
+
+
+            if (daysLeft === 0) {
+
+                return "🎉 Happy Birthday!";
+
+            }
+
+
+            return (
+                nextBirthday.toLocaleDateString(
+                    "en-IN",
+                    {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric"
+                    }
+                ) +
+                " — " +
+                daysLeft +
+                " days left"
+            );
+
+        }
+
+
+
+        /* ================= CALCULATE ================= */
+
+        calculateBtn.addEventListener(
+            "click",
+            function () {
+
+
+                errorBox.style.display =
+                    "none";
+
+
+                if (!dobInput.value) {
+
+                    errorBox.textContent =
+                        "Please select your date of birth.";
+
+                    errorBox.style.display =
+                        "block";
+
+                    result.style.display =
+                        "none";
+
+                    return;
+
+                }
+
+
+                if (!calculateDate.value) {
+
+                    errorBox.textContent =
+                        "Please select the date to calculate age on.";
+
+                    errorBox.style.display =
+                        "block";
+
+                    result.style.display =
+                        "none";
+
+                    return;
+
+                }
+
+
+                const birthDate =
+                    getLocalDate(
+                        dobInput.value
+                    );
+
+
+                const endDate =
+                    getLocalDate(
+                        calculateDate.value
+                    );
+
+
+                if (birthDate > endDate) {
+
+                    errorBox.textContent =
+                        "Date of birth cannot be after the calculation date.";
+
+                    errorBox.style.display =
+                        "block";
+
+                    result.style.display =
+                        "none";
+
+                    return;
+
+                }
+
+
+                const age =
+                    calculateExactAge(
+                        birthDate,
+                        endDate
+                    );
+
+
+                const milliseconds =
+                    endDate.getTime() -
+                    birthDate.getTime();
+
+
+                const days =
+                    Math.floor(
+                        milliseconds /
+                        (1000 * 60 * 60 * 24)
+                    );
+
+
+                const weeks =
+                    Math.floor(days / 7);
+
+
+                const months =
+                    age.years * 12 +
+                    age.months;
+
+
+                mainAge.textContent =
+                    age.years +
+                    " Years " +
+                    age.months +
+                    " Months " +
+                    age.days +
+                    " Days";
+
+
+                totalYears.textContent =
+                    age.years;
+
+
+                totalMonths.textContent =
+                    months;
+
+
+                totalWeeks.textContent =
+                    weeks.toLocaleString(
+                        "en-IN"
+                    );
+
+
+                totalDays.textContent =
+                    days.toLocaleString(
+                        "en-IN"
+                    );
+
+
+                birthdayText.textContent =
+                    calculateBirthday(
+                        birthDate,
+                        endDate
+                    );
+
+
+                result.style.display =
+                    "block";
+
+            }
+        );
+
+
+
+        /* ================= CLEAR ================= */
+
+        clearBtn.addEventListener(
+            "click",
+            function () {
+
+                dobInput.value = "";
+
+                calculateDate.value =
+                    getTodayString();
+
+                errorBox.style.display =
+                    "none";
+
+                result.style.display =
+                    "none";
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>

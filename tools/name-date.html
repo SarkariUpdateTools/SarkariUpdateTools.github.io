@@ -1,0 +1,2082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Name & Date on Photo - Sarkari Update Tools</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f5f7fa;
+    color:#111827;
+}
+
+/* HEADER */
+
+header{
+    background:#0d47a1;
+    color:white;
+    padding:20px;
+    text-align:center;
+}
+
+header h1{
+    font-size:26px;
+    margin-bottom:6px;
+}
+
+header p{
+    font-size:14px;
+    opacity:.9;
+}
+
+/* BACK TO HOME */
+
+.back-home{
+    width:94%;
+    max-width:900px;
+    margin:25px auto 15px;
+}
+
+.back-home a{
+    color:#0d47a1;
+    text-decoration:none;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.back-home a:hover{
+    text-decoration:underline;
+}
+
+/* MAIN */
+
+.container{
+    width:94%;
+    max-width:900px;
+    margin:20px auto 50px;
+}
+
+/* CARD */
+
+.card{
+    background:white;
+    border:1px solid #e1e5ea;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:16px;
+}
+
+.card-title{
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:15px;
+}
+
+label{
+    display:block;
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:7px;
+}
+
+.form-group{
+    margin-bottom:15px;
+}
+
+/* INPUTS */
+
+input[type="text"],
+input[type="date"],
+input[type="number"],
+select{
+    width:100%;
+    height:42px;
+    padding:0 12px;
+    border:1px solid #d1d5db;
+    border-radius:7px;
+    font-size:14px;
+    outline:none;
+    background:white;
+}
+
+input:focus,
+select:focus{
+    border-color:#0d47a1;
+}
+
+.file-input{
+    width:100%;
+    padding:11px;
+    border:2px dashed #cbd5e1;
+    border-radius:8px;
+    background:#f8fafc;
+}
+
+.help-text{
+    color:#64748b;
+    font-size:12px;
+    margin-top:6px;
+}
+
+/* GRID */
+
+.grid-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.control{
+    margin-bottom:15px;
+}
+
+/* RANGE */
+
+.range-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+input[type="range"]{
+    flex:1;
+    accent-color:#0d47a1;
+}
+
+.value{
+    width:50px;
+    text-align:right;
+    font-size:13px;
+    font-weight:bold;
+}
+
+/* COLOR */
+
+.color-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+input[type="color"]{
+    width:52px;
+    height:40px;
+    padding:2px;
+    border:1px solid #d1d5db;
+    border-radius:7px;
+    cursor:pointer;
+}
+
+/* PREVIEW */
+
+.preview-area{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:250px;
+    background:#f1f5f9;
+    border-radius:9px;
+    padding:15px;
+    overflow:hidden;
+}
+
+.preview-image-box{
+    width:100%;
+    max-width:400px;
+    max-height:520px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    background:#fff;
+    border:1px solid #d1d5db;
+    border-radius:5px;
+}
+
+#previewCanvas{
+    display:block;
+    max-width:100%;
+    max-height:500px;
+    width:auto;
+    height:auto;
+}
+
+/* BUTTONS */
+
+.button-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+button{
+    border:none;
+    border-radius:7px;
+    padding:11px 18px;
+    font-size:14px;
+    cursor:pointer;
+}
+
+.primary-btn{
+    background:#0d47a1;
+    color:#fff;
+}
+
+.primary-btn:hover{
+    background:#083578;
+}
+
+.secondary-btn{
+    background:#e5e7eb;
+    color:#111827;
+}
+
+.secondary-btn:hover{
+    background:#d1d5db;
+}
+
+.download-btn{
+    display:inline-block;
+    background:#198754;
+    color:#fff;
+    padding:12px 20px;
+    border-radius:7px;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:bold;
+}
+
+/* STATUS */
+
+.status{
+    margin-top:12px;
+    padding:10px;
+    border-radius:7px;
+    background:#f1f5f9;
+    color:#475569;
+    font-size:13px;
+    text-align:center;
+}
+
+/* RESULT */
+
+.result{
+    margin-top:18px;
+    text-align:center;
+}
+
+.result img{
+    display:block;
+    max-width:400px;
+    max-height:520px;
+    width:auto;
+    height:auto;
+    margin:0 auto 12px;
+    border:1px solid #d1d5db;
+    border-radius:5px;
+}
+
+.result-size{
+    font-size:13px;
+    color:#475569;
+    margin-bottom:12px;
+}
+
+.hidden{
+    display:none !important;
+}
+
+/* CROP MODAL */
+
+.crop-modal{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    background:rgba(0,0,0,.75);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:10px;
+}
+
+.crop-box{
+    width:100%;
+    max-width:720px;
+    max-height:94vh;
+    overflow:auto;
+    background:#fff;
+    border-radius:12px;
+    padding:15px;
+}
+
+.crop-title{
+    text-align:center;
+    font-size:19px;
+    font-weight:bold;
+    margin-bottom:12px;
+}
+
+.crop-area{
+    position:relative;
+    margin:auto;
+    background:#111;
+    overflow:hidden;
+    border-radius:6px;
+    touch-action:none;
+    user-select:none;
+}
+
+#cropCanvas{
+    display:block;
+    touch-action:none;
+}
+
+.crop-selection{
+    position:absolute;
+    border:2px solid #fff;
+    box-shadow:0 0 0 9999px rgba(0,0,0,.48);
+    cursor:move;
+    touch-action:none;
+}
+
+.crop-selection::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    border:1px dashed rgba(255,255,255,.9);
+    pointer-events:none;
+}
+
+.crop-handle{
+    position:absolute;
+    width:20px;
+    height:20px;
+    background:#fff;
+    border:2px solid #0d47a1;
+    border-radius:4px;
+    z-index:5;
+}
+
+.handle-tl{
+    left:-10px;
+    top:-10px;
+    cursor:nwse-resize;
+}
+
+.handle-tr{
+    right:-10px;
+    top:-10px;
+    cursor:nesw-resize;
+}
+
+.handle-bl{
+    left:-10px;
+    bottom:-10px;
+    cursor:nesw-resize;
+}
+
+.handle-br{
+    right:-10px;
+    bottom:-10px;
+    cursor:nwse-resize;
+}
+
+.crop-buttons{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-top:15px;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    header h1{
+        font-size:22px;
+    }
+
+    .container{
+        width:94%;
+        margin-top:18px;
+    }
+
+    .card{
+        padding:16px;
+    }
+
+    .grid-2{
+        grid-template-columns:1fr;
+        gap:0;
+    }
+
+    .preview-area{
+        padding:10px;
+        min-height:200px;
+    }
+
+    .preview-image-box{
+        max-height:420px;
+    }
+
+    #previewCanvas{
+        max-height:400px;
+    }
+
+    .result img{
+        max-height:420px;
+    }
+
+    .crop-modal{
+        padding:5px;
+    }
+
+    .crop-box{
+        padding:10px;
+    }
+
+    .crop-area{
+        max-width:100%;
+        max-height:60vh;
+    }
+
+    .crop-buttons{
+        flex-direction:column;
+    }
+
+    .crop-buttons button{
+        width:100%;
+    }
+}
+
+
+/* ================= CHANNEL LINKS ================= */
+.youtube-link{position:absolute;left:22px;top:18px;display:flex;align-items:center;gap:9px;padding:8px 12px;background:white;color:#111827;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;transition:.2s;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.youtube-link:hover,.telegram-link:hover{transform:translateY(-2px);box-shadow:0 5px 14px rgba(0,0,0,.20)}
+.youtube-icon{width:32px;height:23px;background:#ff0000;border-radius:7px;display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+.youtube-icon:after{content:"";width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:9px solid white;margin-left:2px}
+.telegram-link{position:absolute;right:22px;top:18px;display:flex;align-items:center;gap:9px;padding:8px 12px;background:white;color:#111827;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;transition:.2s;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.telegram-icon{width:32px;height:32px;background:#229ED9;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.telegram-icon svg{width:19px;height:19px;fill:white}
+.youtube-text,.telegram-text{display:flex;flex-direction:column;align-items:flex-start;line-height:1.15}.youtube-text small,.telegram-text small{font-size:9px;color:#666;font-weight:500}.youtube-text strong,.telegram-text strong{font-size:13px;color:#111827}
+@media(max-width:600px){.youtube-link{left:10px;top:10px;padding:7px 9px;gap:7px;font-size:12px}.youtube-icon{width:28px;height:20px;border-radius:6px}.youtube-icon:after{border-top-width:5px;border-bottom-width:5px;border-left-width:8px}.telegram-link{right:10px;top:10px;padding:5px 8px;gap:6px;font-size:12px}.telegram-icon{width:27px;height:27px}.telegram-icon svg{width:16px;height:16px}.youtube-text small,.telegram-text small{font-size:8px}.youtube-text strong,.telegram-text strong{font-size:12px}header h1{margin-top:28px}}
+@media(max-width:400px){.youtube-text small,.telegram-text small{display:none}.youtube-link{padding:6px 8px}.telegram-link{padding:5px 7px}}
+</style>
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header>
+
+    <a href="https://www.youtube.com/@YourSarkariUpdate" target="_blank" rel="noopener noreferrer" class="youtube-link">
+        <span class="youtube-icon"></span>
+        <span class="youtube-text"><small>Visit our YouTube Channel</small><strong>Sarkari Update</strong></span>
+    </a>
+
+    <a href="https://t.me/YourSarkariUpdate" target="_blank" rel="noopener noreferrer" class="telegram-link">
+        <span class="telegram-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21.8 3.2L18.7 20c-.2 1.2-.9 1.5-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.2-8.3c.4-.4-.1-.6-.6-.2L6.1 13.5 1.2 12c-1.1-.3-1.1-1 .2-1.5L20.5 3c.9-.3 1.7.2 1.3.2z"/></svg></span>
+        <span class="telegram-text"><small>Join our Telegram Channel</small><strong>Sarkari Update</strong></span>
+    </a>
+
+    <h1>Name & Date on Photo</h1>
+    <p>Create a professional photo with name and date</p>
+
+</header>
+
+
+<!-- BACK TO HOME -->
+
+<div class="back-home">
+
+    <a href="../index.html">
+        ← Back to Home
+    </a>
+
+</div>
+
+
+<main class="container">
+
+
+<!-- PHOTO -->
+
+<div class="card">
+
+    <div class="card-title">
+        Upload Photo
+    </div>
+
+    <div class="form-group">
+
+        <label>
+            Select Photo
+        </label>
+
+        <input
+            type="file"
+            id="photoInput"
+            class="file-input"
+            accept="image/jpeg,image/png,image/webp"
+        >
+
+        <div class="help-text">
+            JPG, JPEG, PNG or WebP supported
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- NAME & DATE -->
+
+<div class="card">
+
+    <div class="card-title">
+        Name & Date
+    </div>
+
+    <div class="grid-2">
+
+        <div class="form-group">
+
+            <label>
+                Name
+            </label>
+
+            <input
+                type="text"
+                id="nameInput"
+                placeholder="Enter Name"
+                maxlength="100"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Date
+            </label>
+
+            <input
+                type="date"
+                id="dateInput"
+            >
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- TEXT SETTINGS -->
+
+<div class="card">
+
+    <div class="card-title">
+        Text Settings
+    </div>
+
+    <div class="grid-2">
+
+
+        <div class="control">
+
+            <label>
+                Font Size
+            </label>
+
+            <div class="range-row">
+
+                <input
+                    type="range"
+                    id="fontSize"
+                    min="10"
+                    max="150"
+                    value="42"
+                >
+
+                <span
+                    class="value"
+                    id="fontSizeValue"
+                >
+                    42
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="control">
+
+            <label>
+                Text Color
+            </label>
+
+            <div class="color-row">
+
+                <input
+                    type="color"
+                    id="textColor"
+                    value="#000000"
+                >
+
+                <span class="help-text">
+                    Select color
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="control">
+
+        <label>
+            Text Alignment
+        </label>
+
+        <select id="textAlign">
+
+            <option value="center">
+                Center
+            </option>
+
+            <option value="left">
+                Left
+            </option>
+
+            <option value="right">
+                Right
+            </option>
+
+        </select>
+
+    </div>
+
+</div>
+
+
+<!-- POSITION -->
+
+<div class="card">
+
+    <div class="card-title">
+        Name & Date Position
+    </div>
+
+    <div class="grid-2">
+
+
+        <div class="control">
+
+            <label>
+                Horizontal Position
+            </label>
+
+            <div class="range-row">
+
+                <input
+                    type="range"
+                    id="textX"
+                    min="0"
+                    max="100"
+                    value="50"
+                >
+
+                <span
+                    class="value"
+                    id="textXValue"
+                >
+                    50%
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="control">
+
+            <label>
+                Vertical Position
+            </label>
+
+            <div class="range-row">
+
+                <input
+                    type="range"
+                    id="textY"
+                    min="0"
+                    max="100"
+                    value="50"
+                >
+
+                <span
+                    class="value"
+                    id="textYValue"
+                >
+                    50%
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- FILE SIZE -->
+
+<div class="card">
+
+    <div class="card-title">
+        File Size
+    </div>
+
+    <label>
+        Target File Size (KB)
+    </label>
+
+    <input
+        type="number"
+        id="targetKB"
+        min="1"
+        step="1"
+        placeholder="Example: 100"
+    >
+
+    <div class="help-text">
+        Enter any target size such as 20, 50, 100, 250, 500 or 1000 KB.
+    </div>
+
+</div>
+
+
+<!-- LIVE PREVIEW -->
+
+<div class="card">
+
+    <div class="card-title">
+        Live Preview
+    </div>
+
+    <div class="preview-area">
+
+        <div class="preview-image-box">
+
+            <canvas id="previewCanvas"></canvas>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- FINAL IMAGE -->
+
+<div class="card">
+
+    <div class="card-title">
+        Final Image
+    </div>
+
+    <div class="button-row">
+
+        <button
+            class="primary-btn"
+            id="createBtn"
+        >
+            🖼️ Create Final Image
+        </button>
+
+    </div>
+
+
+    <div
+        id="status"
+        class="status hidden"
+    ></div>
+
+
+    <div
+        id="resultBox"
+        class="result hidden"
+    >
+
+        <img
+            id="resultImage"
+            alt="Final Image"
+        >
+
+        <div class="result-size">
+
+            File Size:
+            <strong id="resultSize">-</strong>
+
+        </div>
+
+        <a
+            id="downloadBtn"
+            class="download-btn"
+            download="name-date-photo.jpg"
+        >
+            ⬇️ Download Image
+        </a>
+
+    </div>
+
+</div>
+
+</main>
+
+
+<!-- CROP MODAL -->
+
+<div
+    id="cropModal"
+    class="crop-modal hidden"
+>
+
+    <div class="crop-box">
+
+        <div class="crop-title">
+            Crop Photo
+        </div>
+
+
+        <div
+            id="cropArea"
+            class="crop-area"
+        >
+
+            <canvas
+                id="cropCanvas"
+            ></canvas>
+
+            <div
+                id="cropSelection"
+                class="crop-selection"
+            ></div>
+
+        </div>
+
+
+        <div class="crop-buttons">
+
+            <button
+                class="primary-btn"
+                id="cropUseBtn"
+            >
+                ✂️ Crop & Use
+            </button>
+
+            <button
+                class="secondary-btn"
+                id="cropSkipBtn"
+            >
+                Skip Crop
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ELEMENTS */
+
+const photoInput =
+    document.getElementById("photoInput");
+
+const nameInput =
+    document.getElementById("nameInput");
+
+const dateInput =
+    document.getElementById("dateInput");
+
+const fontSize =
+    document.getElementById("fontSize");
+
+const fontSizeValue =
+    document.getElementById("fontSizeValue");
+
+const textColor =
+    document.getElementById("textColor");
+
+const textAlign =
+    document.getElementById("textAlign");
+
+const textX =
+    document.getElementById("textX");
+
+const textY =
+    document.getElementById("textY");
+
+const textXValue =
+    document.getElementById("textXValue");
+
+const textYValue =
+    document.getElementById("textYValue");
+
+const targetKB =
+    document.getElementById("targetKB");
+
+const previewCanvas =
+    document.getElementById("previewCanvas");
+
+const createBtn =
+    document.getElementById("createBtn");
+
+const statusBox =
+    document.getElementById("status");
+
+const resultBox =
+    document.getElementById("resultBox");
+
+const resultImage =
+    document.getElementById("resultImage");
+
+const resultSize =
+    document.getElementById("resultSize");
+
+const downloadBtn =
+    document.getElementById("downloadBtn");
+
+const cropModal =
+    document.getElementById("cropModal");
+
+const cropArea =
+    document.getElementById("cropArea");
+
+const cropCanvas =
+    document.getElementById("cropCanvas");
+
+const cropSelection =
+    document.getElementById("cropSelection");
+
+const cropUseBtn =
+    document.getElementById("cropUseBtn");
+
+const cropSkipBtn =
+    document.getElementById("cropSkipBtn");
+
+
+/* VARIABLES */
+
+let sourceImage = null;
+let cropImage = null;
+
+let cropWidth = 0;
+let cropHeight = 0;
+
+let cropData = {
+    x:0,
+    y:0,
+    width:0,
+    height:0
+};
+
+let cropAction = null;
+
+let startX = 0;
+let startY = 0;
+
+let startData = null;
+
+
+/* DATE */
+
+function formatDate(value){
+
+    if(!value){
+        return "";
+    }
+
+    const p = value.split("-");
+
+    if(p.length !== 3){
+        return value;
+    }
+
+    return p[2] + "/" + p[1] + "/" + p[0];
+}
+
+
+/* PHOTO UPLOAD */
+
+photoInput.addEventListener(
+    "change",
+    function(){
+
+        const file = this.files[0];
+
+        if(!file){
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function(e){
+
+            const img = new Image();
+
+            img.onload = function(){
+
+                cropImage = img;
+
+                openCrop();
+
+            };
+
+            img.src = e.target.result;
+
+        };
+
+        reader.readAsDataURL(file);
+
+    }
+);
+
+
+/* OPEN CROP */
+
+function openCrop(){
+
+    cropModal.classList.remove("hidden");
+
+    requestAnimationFrame(function(){
+
+        const maxW =
+            Math.min(
+                680,
+                window.innerWidth * .90
+            );
+
+        const maxH =
+            Math.min(
+                window.innerHeight * .60,
+                600
+            );
+
+        const ratio =
+            cropImage.width /
+            cropImage.height;
+
+        let w = maxW;
+        let h = w / ratio;
+
+        if(h > maxH){
+
+            h = maxH;
+            w = h * ratio;
+
+        }
+
+        cropWidth =
+            Math.round(w);
+
+        cropHeight =
+            Math.round(h);
+
+        cropCanvas.width =
+            cropWidth;
+
+        cropCanvas.height =
+            cropHeight;
+
+        cropArea.style.width =
+            cropWidth + "px";
+
+        cropArea.style.height =
+            cropHeight + "px";
+
+        cropCanvas.style.width =
+            cropWidth + "px";
+
+        cropCanvas.style.height =
+            cropHeight + "px";
+
+        const ctx =
+            cropCanvas.getContext("2d");
+
+        ctx.clearRect(
+            0,
+            0,
+            cropWidth,
+            cropHeight
+        );
+
+        ctx.drawImage(
+            cropImage,
+            0,
+            0,
+            cropWidth,
+            cropHeight
+        );
+
+        const margin =
+            Math.min(
+                cropWidth,
+                cropHeight
+            ) * .025;
+
+        cropData = {
+
+            x:margin,
+            y:margin,
+
+            width:
+                cropWidth -
+                margin * 2,
+
+            height:
+                cropHeight -
+                margin * 2
+
+        };
+
+        createHandles();
+
+        updateCrop();
+
+    });
+
+}
+
+
+/* CROP HANDLES */
+
+function createHandles(){
+
+    cropSelection.innerHTML = "";
+
+    ["tl","tr","bl","br"].forEach(
+        function(pos){
+
+            const handle =
+                document.createElement("div");
+
+            handle.className =
+                "crop-handle handle-" + pos;
+
+            handle.dataset.handle =
+                pos;
+
+            cropSelection.appendChild(handle);
+
+            handle.addEventListener(
+                "pointerdown",
+                startResize
+            );
+
+        }
+    );
+
+
+    cropSelection.addEventListener(
+        "pointerdown",
+        startMove
+    );
+
+}
+
+
+/* UPDATE CROP */
+
+function updateCrop(){
+
+    cropSelection.style.left =
+        cropData.x + "px";
+
+    cropSelection.style.top =
+        cropData.y + "px";
+
+    cropSelection.style.width =
+        cropData.width + "px";
+
+    cropSelection.style.height =
+        cropData.height + "px";
+
+}
+
+
+/* MOVE CROP */
+
+function startMove(e){
+
+    if(
+        e.target.classList.contains(
+            "crop-handle"
+        )
+    ){
+        return;
+    }
+
+    e.preventDefault();
+
+    cropAction = "move";
+
+    startX = e.clientX;
+    startY = e.clientY;
+
+    startData = {
+        ...cropData
+    };
+
+    cropSelection.setPointerCapture(
+        e.pointerId
+    );
+
+}
+
+
+/* RESIZE CROP */
+
+function startResize(e){
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    cropAction =
+        e.target.dataset.handle;
+
+    startX = e.clientX;
+    startY = e.clientY;
+
+    startData = {
+        ...cropData
+    };
+
+    e.target.setPointerCapture(
+        e.pointerId
+    );
+
+}
+
+
+/* CROP POINTER */
+
+cropSelection.addEventListener(
+    "pointermove",
+    function(e){
+
+        if(!cropAction){
+            return;
+        }
+
+        const dx =
+            e.clientX - startX;
+
+        const dy =
+            e.clientY - startY;
+
+        const s = startData;
+
+
+        /* MOVE */
+
+        if(cropAction === "move"){
+
+            cropData.x =
+                Math.max(
+                    0,
+                    Math.min(
+                        cropWidth - s.width,
+                        s.x + dx
+                    )
+                );
+
+            cropData.y =
+                Math.max(
+                    0,
+                    Math.min(
+                        cropHeight - s.height,
+                        s.y + dy
+                    )
+                );
+
+        }
+
+
+        /* TOP LEFT */
+
+        if(cropAction === "tl"){
+
+            const right =
+                s.x + s.width;
+
+            const bottom =
+                s.y + s.height;
+
+            const x =
+                Math.max(
+                    0,
+                    Math.min(
+                        right - 30,
+                        s.x + dx
+                    )
+                );
+
+            const y =
+                Math.max(
+                    0,
+                    Math.min(
+                        bottom - 30,
+                        s.y + dy
+                    )
+                );
+
+            cropData.x = x;
+            cropData.y = y;
+
+            cropData.width =
+                right - x;
+
+            cropData.height =
+                bottom - y;
+
+        }
+
+
+        /* TOP RIGHT */
+
+        if(cropAction === "tr"){
+
+            const right =
+                Math.max(
+                    s.x + 30,
+                    Math.min(
+                        cropWidth,
+                        s.x + s.width + dx
+                    )
+                );
+
+            const y =
+                Math.max(
+                    0,
+                    Math.min(
+                        s.y + s.height - 30,
+                        s.y + dy
+                    )
+                );
+
+            cropData.x = s.x;
+            cropData.y = y;
+
+            cropData.width =
+                right - s.x;
+
+            cropData.height =
+                s.y + s.height - y;
+
+        }
+
+
+        /* BOTTOM LEFT */
+
+        if(cropAction === "bl"){
+
+            const x =
+                Math.max(
+                    0,
+                    Math.min(
+                        s.x + s.width - 30,
+                        s.x + dx
+                    )
+                );
+
+            const bottom =
+                Math.max(
+                    s.y + 30,
+                    Math.min(
+                        cropHeight,
+                        s.y + s.height + dy
+                    )
+                );
+
+            cropData.x = x;
+            cropData.y = s.y;
+
+            cropData.width =
+                s.x + s.width - x;
+
+            cropData.height =
+                bottom - s.y;
+
+        }
+
+
+        /* BOTTOM RIGHT */
+
+        if(cropAction === "br"){
+
+            const right =
+                Math.max(
+                    s.x + 30,
+                    Math.min(
+                        cropWidth,
+                        s.x + s.width + dx
+                    )
+                );
+
+            const bottom =
+                Math.max(
+                    s.y + 30,
+                    Math.min(
+                        cropHeight,
+                        s.y + s.height + dy
+                    )
+                );
+
+            cropData.x = s.x;
+            cropData.y = s.y;
+
+            cropData.width =
+                right - s.x;
+
+            cropData.height =
+                bottom - s.y;
+
+        }
+
+        updateCrop();
+
+    }
+);
+
+
+/* CROP END */
+
+cropSelection.addEventListener(
+    "pointerup",
+    function(){
+
+        cropAction = null;
+
+    }
+);
+
+cropSelection.addEventListener(
+    "pointercancel",
+    function(){
+
+        cropAction = null;
+
+    }
+);
+
+
+/* CROP USE */
+
+cropUseBtn.addEventListener(
+    "click",
+    function(){
+
+        const scaleX =
+            cropImage.width /
+            cropWidth;
+
+        const scaleY =
+            cropImage.height /
+            cropHeight;
+
+        const canvas =
+            document.createElement(
+                "canvas"
+            );
+
+        canvas.width =
+            Math.round(
+                cropData.width *
+                scaleX
+            );
+
+        canvas.height =
+            Math.round(
+                cropData.height *
+                scaleY
+            );
+
+        const ctx =
+            canvas.getContext("2d");
+
+        ctx.drawImage(
+            cropImage,
+
+            cropData.x * scaleX,
+            cropData.y * scaleY,
+
+            cropData.width * scaleX,
+            cropData.height * scaleY,
+
+            0,
+            0,
+
+            canvas.width,
+            canvas.height
+        );
+
+        const img =
+            new Image();
+
+        img.onload = function(){
+
+            sourceImage = img;
+
+            cropModal.classList.add(
+                "hidden"
+            );
+
+            updatePreview();
+
+        };
+
+        img.src =
+            canvas.toDataURL(
+                "image/png"
+            );
+
+    }
+);
+
+
+/* SKIP CROP */
+
+cropSkipBtn.addEventListener(
+    "click",
+    function(){
+
+        sourceImage = cropImage;
+
+        cropModal.classList.add(
+            "hidden"
+        );
+
+        updatePreview();
+
+    }
+);
+
+
+/* DRAW FINAL IMAGE */
+
+function drawFinal(
+    canvas,
+    img
+){
+
+    const photoW =
+        img.width;
+
+    const photoH =
+        img.height;
+
+    const stripH =
+        Math.max(
+            80,
+            Math.round(
+                photoW * .20
+            )
+        );
+
+    canvas.width =
+        photoW;
+
+    canvas.height =
+        photoH + stripH;
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    /* PHOTO BACKGROUND */
+
+    ctx.fillStyle =
+        "#fff";
+
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    /* PHOTO */
+
+    ctx.drawImage(
+        img,
+        0,
+        0,
+        photoW,
+        photoH
+    );
+
+
+    /* WHITE TEXT AREA */
+
+    ctx.fillStyle =
+        "#fff";
+
+    ctx.fillRect(
+        0,
+        photoH,
+        photoW,
+        stripH
+    );
+
+
+    /* FONT */
+
+    const font =
+        Math.max(
+            10,
+            Number(fontSize.value) *
+            (photoW / 600)
+        );
+
+    ctx.font =
+        "bold " +
+        font +
+        "px Arial";
+
+    ctx.fillStyle =
+        textColor.value;
+
+    ctx.textAlign =
+        textAlign.value;
+
+    ctx.textBaseline =
+        "middle";
+
+
+    /* TEXT */
+
+    const name =
+        nameInput.value.trim();
+
+    const date =
+        formatDate(
+            dateInput.value
+        );
+
+
+    /* POSITION */
+
+    const x =
+        photoW *
+        Number(textX.value) /
+        100;
+
+    const y =
+        photoH +
+        stripH *
+        Number(textY.value) /
+        100;
+
+
+    const gap =
+        font * .20;
+
+    const total =
+        font * 2 + gap;
+
+    const firstY =
+        y -
+        total / 2 +
+        font / 2;
+
+
+    if(name){
+
+        ctx.fillText(
+            name,
+            x,
+            firstY
+        );
+
+    }
+
+
+    if(date){
+
+        ctx.fillText(
+            date,
+            x,
+            firstY +
+            font +
+            gap
+        );
+
+    }
+
+}
+
+
+/* LIVE PREVIEW */
+
+function updatePreview(){
+
+    if(!sourceImage){
+        return;
+    }
+
+    drawFinal(
+        previewCanvas,
+        sourceImage
+    );
+
+}
+
+
+/* FONT SIZE */
+
+fontSize.addEventListener(
+    "input",
+    function(){
+
+        fontSizeValue.textContent =
+            this.value;
+
+        updatePreview();
+
+    }
+);
+
+
+/* COLOR */
+
+textColor.addEventListener(
+    "input",
+    updatePreview
+);
+
+
+/* ALIGNMENT */
+
+textAlign.addEventListener(
+    "change",
+    updatePreview
+);
+
+
+/* X POSITION */
+
+textX.addEventListener(
+    "input",
+    function(){
+
+        textXValue.textContent =
+            this.value + "%";
+
+        updatePreview();
+
+    }
+);
+
+
+/* Y POSITION */
+
+textY.addEventListener(
+    "input",
+    function(){
+
+        textYValue.textContent =
+            this.value + "%";
+
+        updatePreview();
+
+    }
+);
+
+
+/* NAME */
+
+nameInput.addEventListener(
+    "input",
+    updatePreview
+);
+
+
+/* DATE */
+
+dateInput.addEventListener(
+    "input",
+    updatePreview
+);
+
+
+/* CANVAS BLOB */
+
+function canvasBlob(
+    canvas,
+    quality
+){
+
+    return new Promise(
+        function(resolve){
+
+            canvas.toBlob(
+                resolve,
+                "image/jpeg",
+                quality
+            );
+
+        }
+    );
+
+}
+
+
+/* BEST QUALITY */
+
+async function bestQuality(
+    canvas,
+    target
+){
+
+    const natural =
+        await canvasBlob(
+            canvas,
+            .98
+        );
+
+
+    if(natural.size <= target){
+
+        return natural;
+
+    }
+
+
+    let low = .05;
+    let high = .98;
+    let best = null;
+
+
+    for(
+        let i = 0;
+        i < 12;
+        i++
+    ){
+
+        const q =
+            (low + high) / 2;
+
+        const blob =
+            await canvasBlob(
+                canvas,
+                q
+            );
+
+
+        if(blob.size <= target){
+
+            best = blob;
+            low = q;
+
+        }else{
+
+            high = q;
+
+        }
+
+    }
+
+
+    if(!best){
+
+        best =
+            await canvasBlob(
+                canvas,
+                .05
+            );
+
+    }
+
+
+    return best;
+
+}
+
+
+/* CREATE FINAL IMAGE */
+
+createBtn.addEventListener(
+    "click",
+    async function(){
+
+        if(!sourceImage){
+
+            alert(
+                "Please upload a photo first."
+            );
+
+            return;
+
+        }
+
+
+        if(
+            !nameInput.value.trim()
+        ){
+
+            alert(
+                "Please enter your name."
+            );
+
+            return;
+
+        }
+
+
+        if(!dateInput.value){
+
+            alert(
+                "Please select a date."
+            );
+
+            return;
+
+        }
+
+
+        statusBox.classList.remove(
+            "hidden"
+        );
+
+        statusBox.textContent =
+            "Creating final image...";
+
+
+        const canvas =
+            document.createElement(
+                "canvas"
+            );
+
+
+        drawFinal(
+            canvas,
+            sourceImage
+        );
+
+
+        const target =
+            Number(
+                targetKB.value
+            );
+
+
+        let blob;
+
+
+        if(target > 0){
+
+            statusBox.textContent =
+                "Optimizing image quality...";
+
+            blob =
+                await bestQuality(
+                    canvas,
+                    target * 1024
+                );
+
+        }else{
+
+            blob =
+                await canvasBlob(
+                    canvas,
+                    .98
+                );
+
+        }
+
+
+        const url =
+            URL.createObjectURL(
+                blob
+            );
+
+
+        resultImage.src =
+            url;
+
+
+        resultSize.textContent =
+            (
+                blob.size / 1024
+            ).toFixed(1) +
+            " KB";
+
+
+        downloadBtn.href =
+            url;
+
+
+        resultBox.classList.remove(
+            "hidden"
+        );
+
+
+        statusBox.textContent =
+            "Final image created successfully.";
+
+
+        setTimeout(
+            function(){
+
+                resultBox.scrollIntoView({
+                    behavior:"smooth",
+                    block:"center"
+                });
+
+            },
+            100
+        );
+
+    }
+);
+
+
+/* DEFAULT VALUES */
+
+fontSizeValue.textContent =
+    fontSize.value;
+
+textXValue.textContent =
+    textX.value + "%";
+
+textYValue.textContent =
+    textY.value + "%";
+
+</script>
+
+</body>
+</html>

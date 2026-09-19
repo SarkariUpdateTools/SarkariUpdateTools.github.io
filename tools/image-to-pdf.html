@@ -1,0 +1,2397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Image to PDF - Sarkari Update Tools</title>
+
+
+    <!-- jsPDF -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #111827;
+        }
+
+
+        header {
+            background: #0d47a1;
+            color: white;
+            padding: 22px 20px;
+            text-align: center;
+        }
+
+
+        header h1 {
+            font-size: 27px;
+            margin-bottom: 6px;
+        }
+
+
+        header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+
+        /* CHANNEL LINKS */
+
+        .youtube-link {
+            position: absolute;
+            left: 22px;
+            top: 18px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px 12px;
+            background: white;
+            color: #111827;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            transition: 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+
+        .youtube-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 14px rgba(0,0,0,0.20);
+        }
+
+        .youtube-icon {
+            width: 32px;
+            height: 23px;
+            background: #ff0000;
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .youtube-icon::after {
+            content: "";
+            width: 0;
+            height: 0;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-left: 9px solid white;
+            margin-left: 2px;
+        }
+
+        .telegram-link {
+            position: absolute;
+            right: 22px;
+            top: 18px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px 12px;
+            background: white;
+            color: #111827;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            transition: 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+
+        .telegram-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 14px rgba(0,0,0,0.20);
+        }
+
+        .telegram-icon {
+            width: 32px;
+            height: 32px;
+            background: #229ED9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .telegram-icon svg {
+            width: 19px;
+            height: 19px;
+            fill: white;
+        }
+
+        .youtube-text,
+        .telegram-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            line-height: 1.15;
+        }
+
+        .youtube-text small,
+        .telegram-text small {
+            font-size: 9px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .youtube-text strong,
+        .telegram-text strong {
+            font-size: 13px;
+            color: #111827;
+        }
+
+
+        .container {
+            width: 92%;
+            max-width: 950px;
+            margin: 25px auto 40px;
+        }
+
+
+        .back-home {
+            margin-bottom: 18px;
+        }
+
+
+        .back-home a {
+            display: inline-block;
+            text-decoration: none;
+            background: white;
+            color: #0d47a1;
+            border: 1px solid #d7dde5;
+            padding: 9px 15px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+
+        .back-home a:hover {
+            background: #eef4ff;
+        }
+
+
+        .tool-box {
+            background: white;
+            border: 1px solid #e0e5eb;
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+
+        .tool-title {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+
+        .tool-title h2 {
+            font-size: 23px;
+            margin-bottom: 7px;
+        }
+
+
+        .tool-title p {
+            color: #666;
+            font-size: 14px;
+        }
+
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+
+        .field label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d5dbe2;
+            border-radius: 7px;
+            background: #fafafa;
+        }
+
+
+        input[type="number"] {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #d5dbe2;
+            border-radius: 7px;
+            font-size: 14px;
+        }
+
+
+        select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #d5dbe2;
+            border-radius: 7px;
+            background: white;
+            font-size: 14px;
+        }
+
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+
+        .image-list {
+            margin-top: 20px;
+        }
+
+
+        .image-list-title {
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+
+        .image-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            background: #f8fafc;
+
+            border: 1px solid #e1e5ea;
+
+            border-radius: 8px;
+
+            padding: 10px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .image-item img {
+            width: 70px;
+            height: 70px;
+
+            object-fit: cover;
+
+            border-radius: 6px;
+
+            border: 1px solid #ddd;
+        }
+
+
+        .image-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+
+        .image-name {
+            font-size: 14px;
+            font-weight: bold;
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+
+        .image-size {
+            margin-top: 4px;
+            color: #777;
+            font-size: 12px;
+        }
+
+
+        .remove-btn {
+            background: #dc2626;
+            color: white;
+
+            border: none;
+
+            padding: 8px 12px;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+
+            font-size: 12px;
+        }
+
+
+        .remove-btn:hover {
+            background: #b91c1c;
+        }
+
+
+        .button-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 22px;
+        }
+
+
+        .main-btn {
+            flex: 1;
+
+            background: #0d47a1;
+            color: white;
+
+            border: none;
+
+            padding: 13px 18px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-size: 15px;
+
+            font-weight: bold;
+        }
+
+
+        .main-btn:hover {
+            background: #083578;
+        }
+
+
+        .main-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+
+        .clear-btn {
+            background: #111827;
+        }
+
+
+        .clear-btn:hover {
+            background: #000;
+        }
+
+
+        .status {
+            display: none;
+
+            margin-top: 18px;
+
+            padding: 13px;
+
+            border-radius: 7px;
+
+            background: #eef4ff;
+
+            color: #0d47a1;
+
+            font-size: 14px;
+
+            text-align: center;
+        }
+
+
+        .status.show {
+            display: block;
+        }
+
+
+        .status.error {
+            background: #fff1f2;
+            color: #b91c1c;
+        }
+
+
+        .status.success {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+
+        .download-section {
+            display: none;
+
+            margin-top: 25px;
+
+            padding-top: 20px;
+
+            border-top: 1px solid #e5e7eb;
+
+            text-align: center;
+        }
+
+
+        .download-section.show {
+            display: block;
+        }
+
+
+        .download-section h3 {
+            margin-bottom: 8px;
+        }
+
+
+        .pdf-info {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+
+        .download-btn {
+            display: inline-block;
+
+            background: #111827;
+
+            color: white;
+
+            text-decoration: none;
+
+            padding: 12px 22px;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+
+        .download-btn:hover {
+            background: #000;
+        }
+
+
+        .tip {
+            margin-top: 15px;
+
+            padding: 11px;
+
+            background: #f8fafc;
+
+            border-left: 4px solid #0d47a1;
+
+            font-size: 13px;
+
+            color: #555;
+
+            line-height: 1.5;
+        }
+
+
+        footer {
+            margin-top: 40px;
+
+            background: #111827;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 20px;
+
+            font-size: 13px;
+        }
+
+
+        @media (max-width: 650px) {
+
+            header h1 {
+                font-size: 22px;
+            }
+
+
+            .container {
+                width: 94%;
+            }
+
+
+            .tool-box {
+                padding: 18px;
+            }
+
+
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .button-row {
+                flex-direction: column;
+            }
+
+
+            .image-item img {
+                width: 60px;
+                height: 60px;
+            }
+
+            .youtube-link {
+                left: 10px;
+                top: 10px;
+                padding: 7px 9px;
+                gap: 7px;
+                font-size: 12px;
+            }
+
+            .youtube-icon {
+                width: 28px;
+                height: 20px;
+                border-radius: 6px;
+            }
+
+            .youtube-icon::after {
+                border-top-width: 5px;
+                border-bottom-width: 5px;
+                border-left-width: 8px;
+            }
+
+            .telegram-link {
+                right: 10px;
+                top: 10px;
+                padding: 5px 8px;
+                gap: 6px;
+                font-size: 12px;
+            }
+
+            .telegram-icon {
+                width: 27px;
+                height: 27px;
+            }
+
+            .telegram-icon svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .youtube-text small,
+            .telegram-text small {
+                font-size: 8px;
+            }
+
+            .youtube-text strong,
+            .telegram-text strong {
+                font-size: 12px;
+            }
+
+            header h1 {
+                margin-top: 28px;
+            }
+
+        }
+
+        @media (max-width: 400px) {
+            .youtube-text small,
+            .telegram-text small {
+                display: none;
+            }
+
+            .youtube-link {
+                padding: 6px 8px;
+            }
+
+            .telegram-link {
+                padding: 5px 7px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <!-- YOUTUBE CHANNEL - LEFT -->
+    <a
+        href="https://www.youtube.com/@YourSarkariUpdate"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="youtube-link"
+    >
+        <span class="youtube-icon"></span>
+
+        <span class="youtube-text">
+            <small>Visit our YouTube Channel</small>
+            <strong>Sarkari Update</strong>
+        </span>
+    </a>
+
+    <!-- TELEGRAM CHANNEL - RIGHT -->
+    <a
+        href="https://t.me/YourSarkariUpdate"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="telegram-link"
+    >
+        <span class="telegram-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21.8 3.2L18.7 20c-.2 1.2-.9 1.5-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.2-8.3c.4-.4-.1-.6-.6-.2L6.1 13.5 1.2 12c-1.1-.3-1.1-1 .2-1.5L20.5 3c.9-.3 1.7.2 1.3.2z"/>
+            </svg>
+        </span>
+
+        <span class="telegram-text">
+            <small>Join our Telegram Channel</small>
+            <strong>Sarkari Update</strong>
+        </span>
+    </a>
+
+    <h1>
+        Image → PDF
+    </h1>
+
+    <p>
+        Convert your images into a PDF document
+    </p>
+
+</header>
+
+
+
+<main class="container">
+
+
+    <!-- BACK HOME -->
+
+    <div class="back-home">
+
+        <a href="../index.html">
+            ← Back to Home
+        </a>
+
+    </div>
+
+
+
+    <div class="tool-box">
+
+
+        <!-- TITLE -->
+
+        <div class="tool-title">
+
+            <h2>
+                Image → PDF
+            </h2>
+
+            <p>
+                Select one or multiple images and create a PDF.
+            </p>
+
+        </div>
+
+
+
+        <!-- IMAGE UPLOAD -->
+
+        <div class="field">
+
+            <label>
+                Select Images
+            </label>
+
+            <input
+                type="file"
+                id="imageInput"
+                accept="image/jpeg,image/jpg,image/png,image/webp"
+                multiple
+            >
+
+        </div>
+
+
+
+        <!-- SETTINGS -->
+
+        <div class="settings-grid">
+
+
+            <!-- PAGE SIZE -->
+
+            <div class="field">
+
+                <label>
+                    Page Size
+                </label>
+
+                <select id="pageSize">
+
+                    <option value="a4">
+                        A4
+                    </option>
+
+                    <option value="a3">
+                        A3
+                    </option>
+
+                    <option value="letter">
+                        Letter
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- ORIENTATION -->
+
+            <div class="field">
+
+                <label>
+                    Orientation
+                </label>
+
+                <select id="orientation">
+
+                    <option value="portrait">
+                        Portrait
+                    </option>
+
+                    <option value="landscape">
+                        Landscape
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- IMAGE FIT -->
+
+            <div class="field">
+
+                <label>
+                    Image Fit
+                </label>
+
+                <select id="imageFit">
+
+                    <option value="contain">
+                        Contain
+                    </option>
+
+                    <option value="cover">
+                        Cover
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- MARGIN -->
+
+            <div class="field">
+
+                <label>
+                    Margin (mm)
+                </label>
+
+                <input
+                    type="number"
+                    id="margin"
+                    value="10"
+                    min="0"
+                    max="50"
+                >
+
+            </div>
+
+
+
+            <!-- TARGET PDF SIZE -->
+
+            <div class="field">
+
+                <label>
+                    Target PDF Size (KB)
+                </label>
+
+                <input
+                    type="number"
+                    id="targetKB"
+                    min="1"
+                    step="1"
+                    placeholder="Example: 200"
+                >
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- IMAGE LIST -->
+
+        <div
+            class="image-list"
+            id="imageList"
+            style="display:none;"
+        >
+
+            <div class="image-list-title">
+
+                Selected Images
+
+            </div>
+
+
+            <div id="imageItems"></div>
+
+        </div>
+
+
+
+        <!-- BUTTONS -->
+
+        <div class="button-row">
+
+
+            <button
+                class="main-btn"
+                id="createPdfBtn"
+                disabled
+            >
+                Create PDF
+            </button>
+
+
+            <button
+                class="main-btn clear-btn"
+                id="clearBtn"
+                disabled
+            >
+                Clear All
+            </button>
+
+
+        </div>
+
+
+
+        <!-- STATUS -->
+
+        <div
+            class="status"
+            id="status"
+        >
+            Ready
+        </div>
+
+
+
+        <!-- TIP -->
+
+        <div class="tip">
+
+            <b>Tip:</b>
+
+            Target PDF Size me required size KB me enter karein,
+            jaise 100, 200, 500 ya 1024 KB.
+
+        </div>
+
+
+
+        <!-- DOWNLOAD -->
+
+        <div
+            class="download-section"
+            id="downloadSection"
+        >
+
+            <h3>
+                PDF Ready
+            </h3>
+
+
+            <div
+                class="pdf-info"
+                id="pdfInfo"
+            >
+            </div>
+
+
+            <a
+                id="downloadBtn"
+                class="download-btn"
+                download="images.pdf"
+            >
+                Download PDF
+            </a>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+
+<footer>
+
+    © 2026 Sarkari Update Tools. All Rights Reserved.
+
+</footer>
+
+
+
+<script>
+
+
+    /*
+        ELEMENTS
+    */
+
+    const imageInput =
+        document.getElementById(
+            "imageInput"
+        );
+
+
+    const imageList =
+        document.getElementById(
+            "imageList"
+        );
+
+
+    const imageItems =
+        document.getElementById(
+            "imageItems"
+        );
+
+
+    const createPdfBtn =
+        document.getElementById(
+            "createPdfBtn"
+        );
+
+
+    const clearBtn =
+        document.getElementById(
+            "clearBtn"
+        );
+
+
+    const pageSize =
+        document.getElementById(
+            "pageSize"
+        );
+
+
+    const orientation =
+        document.getElementById(
+            "orientation"
+        );
+
+
+    const imageFit =
+        document.getElementById(
+            "imageFit"
+        );
+
+
+    const margin =
+        document.getElementById(
+            "margin"
+        );
+
+
+    const targetKB =
+        document.getElementById(
+            "targetKB"
+        );
+
+
+    const status =
+        document.getElementById(
+            "status"
+        );
+
+
+    const downloadSection =
+        document.getElementById(
+            "downloadSection"
+        );
+
+
+    const downloadBtn =
+        document.getElementById(
+            "downloadBtn"
+        );
+
+
+    const pdfInfo =
+        document.getElementById(
+            "pdfInfo"
+        );
+
+
+    /*
+        VARIABLES
+    */
+
+    let selectedFiles = [];
+
+    let pdfUrl = null;
+
+
+    /*
+        STATUS
+    */
+
+    function showStatus(
+        message,
+        type = ""
+    ) {
+
+        status.textContent =
+            message;
+
+        status.className =
+            "status show";
+
+
+        if (type) {
+
+            status.classList.add(
+                type
+            );
+
+        }
+
+    }
+
+
+    /*
+        FORMAT FILE SIZE
+    */
+
+    function formatBytes(
+        bytes
+    ) {
+
+        if (
+            bytes < 1024
+        ) {
+
+            return bytes + " B";
+
+        }
+
+
+        if (
+            bytes < 1024 * 1024
+        ) {
+
+            return (
+                (bytes / 1024).toFixed(1) +
+                " KB"
+            );
+
+        }
+
+
+        return (
+            (bytes / (1024 * 1024)).toFixed(2) +
+            " MB"
+        );
+
+    }
+
+
+    /*
+        LOAD IMAGE
+    */
+
+    function loadImage(
+        file
+    ) {
+
+        return new Promise(
+            (resolve, reject) => {
+
+                const url =
+                    URL.createObjectURL(
+                        file
+                    );
+
+
+                const img =
+                    new Image();
+
+
+                img.onload = () => {
+
+                    URL.revokeObjectURL(
+                        url
+                    );
+
+                    resolve(img);
+
+                };
+
+
+                img.onerror = () => {
+
+                    URL.revokeObjectURL(
+                        url
+                    );
+
+                    reject(
+                        new Error(
+                            "Image could not be loaded."
+                        )
+                    );
+
+                };
+
+
+                img.src =
+                    url;
+
+            }
+        );
+
+    }
+
+
+    /*
+        IMAGE TO JPEG DATA URL
+
+        Quality is adjustable so the
+        PDF target size can be controlled.
+    */
+
+    function imageToDataURL(
+        img,
+        quality
+    ) {
+
+        return new Promise(
+            (resolve, reject) => {
+
+                try {
+
+                    /*
+                        Limit very large images.
+                        This also keeps PDF generation
+                        reasonably fast.
+                    */
+
+                    const maxSize =
+                        2500;
+
+
+                    let width =
+                        img.naturalWidth ||
+                        img.width;
+
+
+                    let height =
+                        img.naturalHeight ||
+                        img.height;
+
+
+                    const largest =
+                        Math.max(
+                            width,
+                            height
+                        );
+
+
+                    if (
+                        largest > maxSize
+                    ) {
+
+                        const scale =
+                            maxSize /
+                            largest;
+
+
+                        width =
+                            Math.round(
+                                width * scale
+                            );
+
+
+                        height =
+                            Math.round(
+                                height * scale
+                            );
+
+                    }
+
+
+                    const canvas =
+                        document.createElement(
+                            "canvas"
+                        );
+
+
+                    canvas.width =
+                        width;
+
+
+                    canvas.height =
+                        height;
+
+
+                    const ctx =
+                        canvas.getContext(
+                            "2d"
+                        );
+
+
+                    /*
+                        White background for
+                        transparent PNG/WebP.
+                    */
+
+                    ctx.fillStyle =
+                        "#ffffff";
+
+
+                    ctx.fillRect(
+                        0,
+                        0,
+                        width,
+                        height
+                    );
+
+
+                    ctx.drawImage(
+                        img,
+                        0,
+                        0,
+                        width,
+                        height
+                    );
+
+
+                    const dataURL =
+                        canvas.toDataURL(
+                            "image/jpeg",
+                            quality
+                        );
+
+
+                    resolve({
+
+                        dataURL:
+                            dataURL,
+
+                        width:
+                            width,
+
+                        height:
+                            height
+
+                    });
+
+
+                } catch (error) {
+
+                    reject(error);
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /*
+        IMAGE LIST
+    */
+
+    function renderImageList() {
+
+        imageItems.innerHTML =
+            "";
+
+
+        if (
+            selectedFiles.length === 0
+        ) {
+
+            imageList.style.display =
+                "none";
+
+
+            createPdfBtn.disabled =
+                true;
+
+
+            clearBtn.disabled =
+                true;
+
+
+            return;
+
+        }
+
+
+        imageList.style.display =
+            "block";
+
+
+        createPdfBtn.disabled =
+            false;
+
+
+        clearBtn.disabled =
+            false;
+
+
+        selectedFiles.forEach(
+            (file, index) => {
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "image-item";
+
+
+                const img =
+                    document.createElement(
+                        "img"
+                    );
+
+
+                img.src =
+                    URL.createObjectURL(
+                        file
+                    );
+
+
+                const info =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                info.className =
+                    "image-info";
+
+
+                const name =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                name.className =
+                    "image-name";
+
+
+                name.textContent =
+                    (index + 1) +
+                    ". " +
+                    file.name;
+
+
+                const size =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                size.className =
+                    "image-size";
+
+
+                size.textContent =
+                    formatBytes(
+                        file.size
+                    );
+
+
+                info.appendChild(
+                    name
+                );
+
+
+                info.appendChild(
+                    size
+                );
+
+
+                const remove =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                remove.className =
+                    "remove-btn";
+
+
+                remove.textContent =
+                    "Remove";
+
+
+                remove.addEventListener(
+                    "click",
+                    () => {
+
+                        selectedFiles.splice(
+                            index,
+                            1
+                        );
+
+
+                        renderImageList();
+
+                    }
+                );
+
+
+                item.appendChild(
+                    img
+                );
+
+
+                item.appendChild(
+                    info
+                );
+
+
+                item.appendChild(
+                    remove
+                );
+
+
+                imageItems.appendChild(
+                    item
+                );
+
+            }
+        );
+
+    }
+
+
+    /*
+        FILE SELECT
+    */
+
+    imageInput.addEventListener(
+        "change",
+        function () {
+
+            const files =
+                Array.from(
+                    this.files
+                );
+
+
+            if (
+                files.length === 0
+            ) {
+
+                return;
+
+            }
+
+
+            selectedFiles =
+                selectedFiles.concat(
+                    files
+                );
+
+
+            renderImageList();
+
+
+            downloadSection.classList.remove(
+                "show"
+            );
+
+
+            showStatus(
+                selectedFiles.length +
+                " image(s) selected."
+            );
+
+
+            this.value =
+                "";
+
+        }
+    );
+
+
+    /*
+        CLEAR ALL
+    */
+
+    clearBtn.addEventListener(
+        "click",
+        function () {
+
+            selectedFiles =
+                [];
+
+
+            imageItems.innerHTML =
+                "";
+
+
+            imageList.style.display =
+                "none";
+
+
+            createPdfBtn.disabled =
+                true;
+
+
+            clearBtn.disabled =
+                true;
+
+
+            downloadSection.classList.remove(
+                "show"
+            );
+
+
+            if (pdfUrl) {
+
+                URL.revokeObjectURL(
+                    pdfUrl
+                );
+
+
+                pdfUrl =
+                    null;
+
+            }
+
+
+            showStatus(
+                "All images cleared."
+            );
+
+        }
+    );
+
+
+    /*
+        PAGE SIZE
+    */
+
+    function getPageSize() {
+
+        if (
+            pageSize.value ===
+            "a3"
+        ) {
+
+            return {
+                width: 297,
+                height: 420
+            };
+
+        }
+
+
+        if (
+            pageSize.value ===
+            "letter"
+        ) {
+
+            return {
+                width: 215.9,
+                height: 279.4
+            };
+
+        }
+
+
+        return {
+            width: 210,
+            height: 297
+        };
+
+    }
+
+
+    /*
+        BUILD PDF
+
+        quality controls the size of
+        every image inside the PDF.
+    */
+
+    async function buildPDF(
+        images,
+        quality
+    ) {
+
+        const {
+            jsPDF
+        } =
+            window.jspdf;
+
+
+        let size =
+            getPageSize();
+
+
+        let pageWidth =
+            size.width;
+
+
+        let pageHeight =
+            size.height;
+
+
+        let pdfOrientation =
+            orientation.value;
+
+
+        if (
+            pdfOrientation ===
+            "landscape"
+        ) {
+
+            const temp =
+                pageWidth;
+
+
+            pageWidth =
+                pageHeight;
+
+
+            pageHeight =
+                temp;
+
+        }
+
+
+        const pdf =
+            new jsPDF({
+
+                orientation:
+                    pdfOrientation,
+
+                unit:
+                    "mm",
+
+                format:
+                    [
+                        pageWidth,
+                        pageHeight
+                    ],
+
+                compress:
+                    true
+
+            });
+
+
+        let marginValue =
+            parseFloat(
+                margin.value
+            );
+
+
+        if (
+            isNaN(
+                marginValue
+            )
+        ) {
+
+            marginValue =
+                10;
+
+        }
+
+
+        marginValue =
+            Math.max(
+                0,
+                Math.min(
+                    50,
+                    marginValue
+                )
+            );
+
+
+        const availableWidth =
+            pageWidth -
+            marginValue * 2;
+
+
+        const availableHeight =
+            pageHeight -
+            marginValue * 2;
+
+
+        for (
+            let i = 0;
+            i < images.length;
+            i++
+        ) {
+
+            const img =
+                images[i];
+
+
+            const imageData =
+                await imageToDataURL(
+                    img,
+                    quality
+                );
+
+
+            const imgWidth =
+                imageData.width;
+
+
+            const imgHeight =
+                imageData.height;
+
+
+            const imageRatio =
+                imgWidth /
+                imgHeight;
+
+
+            const areaRatio =
+                availableWidth /
+                availableHeight;
+
+
+            let drawWidth;
+
+            let drawHeight;
+
+
+            /*
+                CONTAIN
+            */
+
+            if (
+                imageFit.value ===
+                "contain"
+            ) {
+
+                if (
+                    imageRatio >
+                    areaRatio
+                ) {
+
+                    drawWidth =
+                        availableWidth;
+
+
+                    drawHeight =
+                        drawWidth /
+                        imageRatio;
+
+                } else {
+
+                    drawHeight =
+                        availableHeight;
+
+
+                    drawWidth =
+                        drawHeight *
+                        imageRatio;
+
+                }
+
+            }
+
+
+            /*
+                COVER
+            */
+
+            else {
+
+                if (
+                    imageRatio >
+                    areaRatio
+                ) {
+
+                    drawHeight =
+                        availableHeight;
+
+
+                    drawWidth =
+                        drawHeight *
+                        imageRatio;
+
+                } else {
+
+                    drawWidth =
+                        availableWidth;
+
+
+                    drawHeight =
+                        drawWidth /
+                        imageRatio;
+
+                }
+
+            }
+
+
+            const x =
+                (
+                    pageWidth -
+                    drawWidth
+                ) / 2;
+
+
+            const y =
+                (
+                    pageHeight -
+                    drawHeight
+                ) / 2;
+
+
+            if (
+                i > 0
+            ) {
+
+                pdf.addPage(
+                    [
+                        pageWidth,
+                        pageHeight
+                    ],
+                    pdfOrientation
+                );
+
+            }
+
+
+            pdf.addImage(
+
+                imageData.dataURL,
+
+                "JPEG",
+
+                x,
+
+                y,
+
+                drawWidth,
+
+                drawHeight,
+
+                "IMG" + i,
+
+                "FAST"
+
+            );
+
+        }
+
+
+        return pdf.output(
+            "blob"
+        );
+
+    }
+
+
+    /*
+        CREATE PDF
+    */
+
+    createPdfBtn.addEventListener(
+        "click",
+        async function () {
+
+            if (
+                selectedFiles.length === 0
+            ) {
+
+                showStatus(
+                    "Please select at least one image.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !window.jspdf ||
+                !window.jspdf.jsPDF
+            ) {
+
+                showStatus(
+                    "PDF library could not load. Please check your internet connection.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            createPdfBtn.disabled =
+                true;
+
+
+            clearBtn.disabled =
+                true;
+
+
+            downloadSection.classList.remove(
+                "show"
+            );
+
+
+            try {
+
+
+                /*
+                    LOAD ALL IMAGES ONCE
+                */
+
+                showStatus(
+                    "Loading images..."
+                );
+
+
+                const images =
+                    [];
+
+
+                for (
+                    let i = 0;
+                    i < selectedFiles.length;
+                    i++
+                ) {
+
+                    showStatus(
+                        "Loading image " +
+                        (i + 1) +
+                        " of " +
+                        selectedFiles.length +
+                        "..."
+                    );
+
+
+                    const img =
+                        await loadImage(
+                            selectedFiles[i]
+                        );
+
+
+                    images.push(
+                        img
+                    );
+
+                }
+
+
+                /*
+                    TARGET SIZE
+                */
+
+                let target =
+                    parseFloat(
+                        targetKB.value
+                    );
+
+
+                if (
+                    isNaN(target) ||
+                    target <= 0
+                ) {
+
+                    target =
+                        null;
+
+                }
+
+
+                let finalBlob =
+                    null;
+
+
+                let finalQuality =
+                    0.92;
+
+
+                /*
+                    NO TARGET
+
+                    Normal high-quality PDF.
+                */
+
+                if (
+                    target === null
+                ) {
+
+                    showStatus(
+                        "Creating PDF..."
+                    );
+
+
+                    finalBlob =
+                        await buildPDF(
+                            images,
+                            0.92
+                        );
+
+
+                    finalQuality =
+                        0.92;
+
+                }
+
+
+                /*
+                    TARGET SIZE MODE
+                */
+
+                else {
+
+
+                    showStatus(
+                        "Optimizing PDF size..."
+                    );
+
+
+                    /*
+                        First check high quality.
+                    */
+
+                    let testBlob =
+                        await buildPDF(
+                            images,
+                            0.92
+                        );
+
+
+                    let testKB =
+                        testBlob.size /
+                        1024;
+
+
+                    /*
+                        Already below target.
+                    */
+
+                    if (
+                        testKB <= target
+                    ) {
+
+                        finalBlob =
+                            testBlob;
+
+
+                        finalQuality =
+                            0.92;
+
+                    }
+
+
+                    /*
+                        Need compression.
+                    */
+
+                    else {
+
+                        let low =
+                            0.15;
+
+
+                        let high =
+                            0.92;
+
+
+                        let bestBlob =
+                            null;
+
+
+                        let bestQuality =
+                            0.15;
+
+
+                        /*
+                            Binary search for
+                            highest quality below
+                            target size.
+                        */
+
+                        for (
+                            let i = 0;
+                            i < 7;
+                            i++
+                        ) {
+
+                            const quality =
+                                (
+                                    low +
+                                    high
+                                ) / 2;
+
+
+                            showStatus(
+                                "Optimizing PDF... " +
+                                (i + 1) +
+                                " / 7"
+                            );
+
+
+                            const blob =
+                                await buildPDF(
+                                    images,
+                                    quality
+                                );
+
+
+                            const sizeKB =
+                                blob.size /
+                                1024;
+
+
+                            if (
+                                sizeKB <= target
+                            ) {
+
+                                bestBlob =
+                                    blob;
+
+
+                                bestQuality =
+                                    quality;
+
+
+                                low =
+                                    quality;
+
+                            } else {
+
+                                high =
+                                    quality;
+
+                            }
+
+                        }
+
+
+                        /*
+                            If even 0.15 quality
+                            is larger than target,
+                            create smallest practical
+                            version.
+                        */
+
+                        if (
+                            !bestBlob
+                        ) {
+
+                            showStatus(
+                                "Creating smallest PDF..."
+                            );
+
+
+                            bestBlob =
+                                await buildPDF(
+                                    images,
+                                    0.10
+                                );
+
+
+                            bestQuality =
+                                0.10;
+
+                        }
+
+
+                        finalBlob =
+                            bestBlob;
+
+
+                        finalQuality =
+                            bestQuality;
+
+                    }
+
+                }
+
+
+                /*
+                    CHECK
+                */
+
+                if (
+                    !finalBlob
+                ) {
+
+                    throw new Error(
+                        "PDF creation failed."
+                    );
+
+                }
+
+
+                /*
+                    OLD URL
+                */
+
+                if (pdfUrl) {
+
+                    URL.revokeObjectURL(
+                        pdfUrl
+                    );
+
+                }
+
+
+                /*
+                    NEW URL
+                */
+
+                pdfUrl =
+                    URL.createObjectURL(
+                        finalBlob
+                    );
+
+
+                downloadBtn.href =
+                    pdfUrl;
+
+
+                downloadBtn.download =
+                    "images.pdf";
+
+
+                /*
+                    FINAL SIZE
+                */
+
+                const finalKB =
+                    finalBlob.size /
+                    1024;
+
+
+                /*
+                    INFO
+                */
+
+                if (
+                    target !== null
+                ) {
+
+                    pdfInfo.innerHTML =
+                        selectedFiles.length +
+                        " image(s) • " +
+                        "Final size: <b>" +
+                        finalKB.toFixed(1) +
+                        " KB</b> • " +
+                        "Target: <b>" +
+                        target +
+                        " KB</b>";
+
+                } else {
+
+                    pdfInfo.innerHTML =
+                        selectedFiles.length +
+                        " image(s) • " +
+                        "PDF size: <b>" +
+                        formatBytes(
+                            finalBlob.size
+                        ) +
+                        "</b>";
+
+                }
+
+
+                /*
+                    SHOW DOWNLOAD
+                */
+
+                downloadSection.classList.add(
+                    "show"
+                );
+
+
+                showStatus(
+                    "PDF created successfully.",
+                    "success"
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "PDF ERROR:",
+                    error
+                );
+
+
+                showStatus(
+                    "PDF creation failed. Please try again.",
+                    "error"
+                );
+
+            }
+
+
+            createPdfBtn.disabled =
+                false;
+
+
+            clearBtn.disabled =
+                false;
+
+        }
+    );
+
+</script>
+
+
+</body>
+</html>

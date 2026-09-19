@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>PDF Compress - Sarkari Update Tools</title>
+
+
+    <!-- PDF.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+    <!-- JSPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #111827;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            background: #0d47a1;
+            color: white;
+            padding: 18px 20px 20px;
+            text-align: center;
+        }
+
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+
+        header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .container {
+            width: 92%;
+            max-width: 900px;
+            margin: 25px auto 40px;
+        }
+
+
+        /* =========================
+           BACK HOME
+        ========================= */
+
+        .back-home {
+            display: inline-block;
+            color: #0d47a1;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 25px;
+        }
+
+
+        .back-home:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           CARD
+        ========================= */
+
+        .card {
+            background: white;
+            border: 1px solid #e1e5ea;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+
+        .card h2 {
+            font-size: 19px;
+            margin-bottom: 18px;
+        }
+
+
+        /* =========================
+           FILE
+        ========================= */
+
+        .field-label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+
+        .file-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px dashed #b8c8dd;
+            border-radius: 7px;
+            background: #fafcff;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+
+        .file-input:hover {
+            border-color: #0d47a1;
+        }
+
+
+        .file-note {
+            color: #64748b;
+            font-size: 12px;
+            margin-top: 7px;
+        }
+
+
+        /* =========================
+           FILE INFO
+        ========================= */
+
+        .file-info {
+            display: none;
+            margin-top: 18px;
+            padding: 13px;
+            background: #f5f7fa;
+            border-radius: 7px;
+            font-size: 14px;
+        }
+
+
+        .file-info strong {
+            display: block;
+            margin-bottom: 5px;
+            word-break: break-word;
+        }
+
+
+        .file-size {
+            color: #64748b;
+        }
+
+
+        /* =========================
+           SETTINGS
+        ========================= */
+
+        .settings-card {
+            display: none;
+        }
+
+
+        .input-label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+
+        .target-input {
+            width: 100%;
+            height: 44px;
+            padding: 0 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            font-size: 14px;
+            outline: none;
+        }
+
+
+        .target-input:focus {
+            border-color: #0d47a1;
+        }
+
+
+        .input-hint {
+            color: #64748b;
+            font-size: 12px;
+            margin-top: 7px;
+        }
+
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .button-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+
+        .compress-btn {
+            flex: 1;
+            height: 40px;
+            border: none;
+            border-radius: 7px;
+            background: #0d47a1;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+
+        .compress-btn:hover {
+            background: #083578;
+        }
+
+
+        .compress-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+
+        .clear-btn {
+            height: 40px;
+            padding: 0 18px;
+            border: none;
+            border-radius: 7px;
+            background: #dc2626;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+
+        .clear-btn:hover {
+            background: #b91c1c;
+        }
+
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .status {
+            display: none;
+            margin-top: 18px;
+            padding: 12px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 7px;
+            color: #1d4ed8;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           RESULT
+        ========================= */
+
+        .result {
+            display: none;
+            margin-top: 18px;
+            padding: 18px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+        }
+
+
+        .result h3 {
+            color: #166534;
+            font-size: 17px;
+            margin-bottom: 13px;
+        }
+
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 8px 0;
+            border-bottom: 1px solid #d9f2df;
+            font-size: 14px;
+        }
+
+
+        .result-row:last-of-type {
+            border-bottom: none;
+        }
+
+
+        .download-btn {
+            display: inline-block;
+            margin-top: 15px;
+            background: #15803d;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+
+        .download-btn:hover {
+            background: #166534;
+        }
+
+
+        /* =========================
+           NOTE
+        ========================= */
+
+        .note {
+            margin-top: 18px;
+            padding: 12px;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 7px;
+            color: #c2410c;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 23px;
+            }
+
+
+            .container {
+                width: 94%;
+                margin-top: 20px;
+            }
+
+
+            .card {
+                padding: 18px;
+            }
+
+
+            .button-row {
+                flex-direction: column;
+            }
+
+
+            .compress-btn,
+            .clear-btn {
+                width: 100%;
+            }
+
+
+            .result-row {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+        }
+
+    
+/* ================= YOUTUBE + TELEGRAM CHANNELS ================= */
+.youtube-link,.telegram-link{position:absolute;top:18px;display:flex;align-items:center;gap:9px;padding:8px 12px;background:white;color:#111827;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;transition:.2s;box-shadow:0 2px 8px rgba(0,0,0,.12);z-index:2}
+.youtube-link{left:22px}.telegram-link{right:22px}
+.youtube-link:hover,.telegram-link:hover{transform:translateY(-2px);box-shadow:0 5px 14px rgba(0,0,0,.20)}
+.youtube-icon{width:32px;height:23px;background:#ff0000;border-radius:7px;display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0}
+.youtube-icon:after{content:"";width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:9px solid white;margin-left:2px}
+.telegram-icon{width:32px;height:32px;background:#229ED9;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}.telegram-icon svg{width:19px;height:19px;fill:white}
+.youtube-text,.telegram-text{display:flex;flex-direction:column;align-items:flex-start;line-height:1.15}.youtube-text small,.telegram-text small{font-size:9px;color:#666;font-weight:500}.youtube-text strong,.telegram-text strong{font-size:13px;color:#111827}
+@media(max-width:650px){.youtube-link{left:10px;top:10px;padding:7px 9px;gap:7px;font-size:12px}.youtube-icon{width:28px;height:20px;border-radius:6px}.youtube-icon:after{border-top-width:5px;border-bottom-width:5px;border-left-width:8px}.telegram-link{right:10px;top:10px;padding:5px 8px;gap:6px;font-size:12px}.telegram-icon{width:27px;height:27px}.telegram-icon svg{width:16px;height:16px}.youtube-text small,.telegram-text small{font-size:8px}.youtube-text strong,.telegram-text strong{font-size:12px}header h1{margin-top:28px}}
+@media(max-width:400px){.youtube-text small,.telegram-text small{display:none}.youtube-link{padding:6px 8px}.telegram-link{padding:5px 7px}}
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header>
+
+        <a href="https://www.youtube.com/@YourSarkariUpdate" target="_blank" rel="noopener noreferrer" class="youtube-link">
+            <span class="youtube-icon"></span>
+            <span class="youtube-text"><small>Visit our YouTube Channel</small><strong>Sarkari Update</strong></span>
+        </a>
+
+        <a href="https://t.me/YourSarkariUpdate" target="_blank" rel="noopener noreferrer" class="telegram-link">
+            <span class="telegram-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21.8 3.2L18.7 20c-.2 1.2-.9 1.5-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.2-8.3c.4-.4-.1-.6-.6-.2L6.1 13.5 1.2 12c-1.1-.3-1.1-1 .2-1.5L20.5 3c.9-.3 1.7.2 1.3.2z"/></svg>
+            </span>
+            <span class="telegram-text"><small>Join our Telegram Channel</small><strong>Sarkari Update</strong></span>
+        </a>
+
+        <h1>PDF Compress</h1>
+        <p>Reduce PDF file size easily</p>
+
+    </header>
+
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main class="container">
+
+
+        <!-- BACK TO HOME -->
+
+        <a
+            href="../index.html"
+            class="back-home"
+        >
+            ← Back to Home
+        </a>
+
+
+
+        <!-- =========================
+             UPLOAD CARD
+        ========================= -->
+
+        <div class="card">
+
+            <h2>
+                Upload PDF
+            </h2>
+
+
+            <label
+                for="pdfInput"
+                class="field-label"
+            >
+                Select PDF
+            </label>
+
+
+            <input
+                type="file"
+                id="pdfInput"
+                class="file-input"
+                accept="application/pdf,.pdf"
+            >
+
+
+            <div class="file-note">
+                PDF files supported
+            </div>
+
+
+            <div
+                class="file-info"
+                id="fileInfo"
+            >
+
+                <strong id="fileName">
+                    -
+                </strong>
+
+                <span
+                    class="file-size"
+                    id="originalSize"
+                >
+                    Original Size: -
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================
+             SETTINGS CARD
+        ========================= -->
+
+        <div
+            class="card settings-card"
+            id="settingsCard"
+        >
+
+            <h2>
+                Compression Settings
+            </h2>
+
+
+            <label
+                for="targetKB"
+                class="input-label"
+            >
+                Target PDF Size (KB)
+            </label>
+
+
+            <input
+                type="number"
+                id="targetKB"
+                class="target-input"
+                min="10"
+                step="1"
+                placeholder="Example: 50"
+            >
+
+
+            <div class="input-hint">
+                Enter the required PDF size in KB.
+            </div>
+
+
+            <div class="button-row">
+
+                <button
+                    type="button"
+                    id="compressBtn"
+                    class="compress-btn"
+                >
+                    Compress PDF
+                </button>
+
+
+                <button
+                    type="button"
+                    id="clearBtn"
+                    class="clear-btn"
+                >
+                    Clear
+                </button>
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div
+                id="status"
+                class="status"
+            >
+                Ready.
+            </div>
+
+
+            <!-- RESULT -->
+
+            <div
+                id="result"
+                class="result"
+            >
+
+                <h3>
+                    Compression Complete
+                </h3>
+
+
+                <div class="result-row">
+
+                    <span>
+                        Original Size
+                    </span>
+
+                    <strong id="resultOriginal">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="result-row">
+
+                    <span>
+                        Compressed Size
+                    </span>
+
+                    <strong id="resultCompressed">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="result-row">
+
+                    <span>
+                        Size Reduction
+                    </span>
+
+                    <strong id="resultReduction">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <a
+                    href="#"
+                    id="downloadBtn"
+                    class="download-btn"
+                    download="compressed-pdf.pdf"
+                >
+                    ⬇ Download Compressed PDF
+                </a>
+
+            </div>
+
+
+            <div class="note">
+
+                <strong>Note:</strong>
+                To reach very small target sizes, PDF pages may be converted
+                into optimized images. Text may no longer remain selectable
+                in the compressed PDF.
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+
+    <script>
+
+
+        /* =========================
+           PDF.JS WORKER
+        ========================= */
+
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+            "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+
+
+        /* =========================
+           ELEMENTS
+        ========================= */
+
+        const pdfInput =
+            document.getElementById("pdfInput");
+
+        const fileInfo =
+            document.getElementById("fileInfo");
+
+        const fileName =
+            document.getElementById("fileName");
+
+        const originalSize =
+            document.getElementById("originalSize");
+
+        const settingsCard =
+            document.getElementById("settingsCard");
+
+        const targetKB =
+            document.getElementById("targetKB");
+
+        const compressBtn =
+            document.getElementById("compressBtn");
+
+        const clearBtn =
+            document.getElementById("clearBtn");
+
+        const status =
+            document.getElementById("status");
+
+        const result =
+            document.getElementById("result");
+
+        const resultOriginal =
+            document.getElementById("resultOriginal");
+
+        const resultCompressed =
+            document.getElementById("resultCompressed");
+
+        const resultReduction =
+            document.getElementById("resultReduction");
+
+        const downloadBtn =
+            document.getElementById("downloadBtn");
+
+
+        let selectedFile = null;
+
+        let compressedBlob = null;
+
+
+
+        /* =========================
+           FORMAT BYTES
+        ========================= */
+
+        function formatBytes(bytes) {
+
+            if (bytes < 1024) {
+
+                return bytes + " B";
+
+            }
+
+
+            if (bytes < 1024 * 1024) {
+
+                return (
+                    bytes / 1024
+                ).toFixed(2) + " KB";
+
+            }
+
+
+            return (
+                bytes / (1024 * 1024)
+            ).toFixed(2) + " MB";
+
+        }
+
+
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        function showStatus(message) {
+
+            status.style.display =
+                "block";
+
+            status.textContent =
+                message;
+
+        }
+
+
+
+        /* =========================
+           PDF SELECT
+        ========================= */
+
+        pdfInput.addEventListener(
+            "change",
+            function () {
+
+                const file =
+                    this.files[0];
+
+
+                if (!file) {
+                    return;
+                }
+
+
+                if (
+                    file.type !== "application/pdf" &&
+                    !file.name
+                        .toLowerCase()
+                        .endsWith(".pdf")
+                ) {
+
+                    alert(
+                        "Please select a PDF file."
+                    );
+
+                    pdfInput.value = "";
+
+                    return;
+
+                }
+
+
+                selectedFile =
+                    file;
+
+
+                fileName.textContent =
+                    file.name;
+
+
+                originalSize.textContent =
+                    "Original Size: " +
+                    formatBytes(file.size);
+
+
+                fileInfo.style.display =
+                    "block";
+
+
+                settingsCard.style.display =
+                    "block";
+
+
+                result.style.display =
+                    "none";
+
+
+                showStatus(
+                    "PDF selected. Enter your target size."
+                );
+
+            }
+        );
+
+
+
+        /* =========================
+           LOAD PDF
+        ========================= */
+
+        async function loadPDF(file) {
+
+            const buffer =
+                await file.arrayBuffer();
+
+
+            return await pdfjsLib
+                .getDocument({
+                    data: buffer
+                })
+                .promise;
+
+        }
+
+
+
+        /* =========================
+           RENDER PAGE
+        ========================= */
+
+        async function renderPage(
+            page,
+            scale,
+            quality
+        ) {
+
+            const viewport =
+                page.getViewport({
+                    scale: scale
+                });
+
+
+            const canvas =
+                document.createElement(
+                    "canvas"
+                );
+
+
+            const context =
+                canvas.getContext(
+                    "2d",
+                    {
+                        alpha: false
+                    }
+                );
+
+
+            canvas.width =
+                Math.max(
+                    1,
+                    Math.floor(
+                        viewport.width
+                    )
+                );
+
+
+            canvas.height =
+                Math.max(
+                    1,
+                    Math.floor(
+                        viewport.height
+                    )
+                );
+
+
+            context.fillStyle =
+                "#ffffff";
+
+
+            context.fillRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+
+            await page.render({
+
+                canvasContext:
+                    context,
+
+                viewport:
+                    viewport
+
+            }).promise;
+
+
+            return canvas.toDataURL(
+                "image/jpeg",
+                quality
+            );
+
+        }
+
+
+
+        /* =========================
+           CREATE PDF
+        ========================= */
+
+        async function createPDF(
+            pdf,
+            quality,
+            scale
+        ) {
+
+            const {
+                jsPDF
+            } = window.jspdf;
+
+
+            let outputPDF = null;
+
+
+            for (
+                let pageNumber = 1;
+                pageNumber <= pdf.numPages;
+                pageNumber++
+            ) {
+
+
+                showStatus(
+                    "Processing page " +
+                    pageNumber +
+                    " of " +
+                    pdf.numPages +
+                    "..."
+                );
+
+
+                const page =
+                    await pdf.getPage(
+                        pageNumber
+                    );
+
+
+                const viewport =
+                    page.getViewport({
+                        scale: scale
+                    });
+
+
+                const image =
+                    await renderPage(
+                        page,
+                        scale,
+                        quality
+                    );
+
+
+                /*
+                    Convert pixels to points
+                */
+
+                const width =
+                    viewport.width *
+                    72 /
+                    96;
+
+
+                const height =
+                    viewport.height *
+                    72 /
+                    96;
+
+
+                const orientation =
+                    width > height
+                        ? "landscape"
+                        : "portrait";
+
+
+                if (!outputPDF) {
+
+                    outputPDF =
+                        new jsPDF({
+
+                            orientation:
+                                orientation,
+
+                            unit:
+                                "pt",
+
+                            format: [
+                                width,
+                                height
+                            ],
+
+                            compress:
+                                true
+
+                        });
+
+                } else {
+
+                    outputPDF.addPage(
+
+                        [
+                            width,
+                            height
+                        ],
+
+                        orientation
+
+                    );
+
+                }
+
+
+                outputPDF.addImage(
+
+                    image,
+
+                    "JPEG",
+
+                    0,
+
+                    0,
+
+                    width,
+
+                    height,
+
+                    undefined,
+
+                    "FAST"
+
+                );
+
+            }
+
+
+            return outputPDF.output(
+                "blob"
+            );
+
+        }
+
+
+
+        /* =========================
+           MAKE EXACT TARGET SIZE
+        ========================= */
+
+        async function makeExactSize(
+            blob,
+            targetBytes
+        ) {
+
+            /*
+                If already exact
+            */
+
+            if (
+                blob.size ===
+                targetBytes
+            ) {
+
+                return blob;
+
+            }
+
+
+            /*
+                If smaller:
+                add harmless bytes after
+                PDF EOF.
+            */
+
+            if (
+                blob.size <
+                targetBytes
+            ) {
+
+                const extra =
+                    targetBytes -
+                    blob.size;
+
+
+                const padding =
+                    new Uint8Array(
+                        extra
+                    );
+
+
+                /*
+                    Use whitespace.
+                    PDF readers generally
+                    ignore bytes after EOF.
+                */
+
+                padding.fill(32);
+
+
+                return new Blob(
+                    [
+                        blob,
+                        padding
+                    ],
+                    {
+                        type:
+                            "application/pdf"
+                    }
+                );
+
+            }
+
+
+            /*
+                If larger, don't pad.
+            */
+
+            return blob;
+
+        }
+
+
+
+        /* =========================
+           COMPRESS TO TARGET
+        ========================= */
+
+        async function compressToTarget(
+            pdf,
+            targetBytes
+        ) {
+
+            let bestBlob =
+                null;
+
+
+            /*
+                We search both:
+                quality + resolution
+            */
+
+            const scales = [
+                1.50,
+                1.25,
+                1.10,
+                1.00,
+                0.90,
+                0.80,
+                0.70,
+                0.60,
+                0.50
+            ];
+
+
+            for (
+                let s = 0;
+                s < scales.length;
+                s++
+            ) {
+
+                const scale =
+                    scales[s];
+
+
+                let low =
+                    0.10;
+
+
+                let high =
+                    0.90;
+
+
+                let currentBest =
+                    null;
+
+
+                /*
+                    Binary search quality
+                */
+
+                for (
+                    let i = 0;
+                    i < 7;
+                    i++
+                ) {
+
+
+                    const quality =
+                        (
+                            low +
+                            high
+                        ) / 2;
+
+
+                    showStatus(
+                        "Optimizing PDF... " +
+                        Math.round(
+                            quality * 100
+                        ) +
+                        "% quality"
+                    );
+
+
+                    const blob =
+                        await createPDF(
+                            pdf,
+                            quality,
+                            scale
+                        );
+
+
+                    if (
+                        blob.size <=
+                        targetBytes
+                    ) {
+
+                        currentBest =
+                            blob;
+
+                        /*
+                            Try higher quality
+                        */
+
+                        low =
+                            quality;
+
+                    } else {
+
+                        /*
+                            Need smaller
+                        */
+
+                        high =
+                            quality;
+
+                    }
+
+                }
+
+
+                if (currentBest) {
+
+                    bestBlob =
+                        currentBest;
+
+                    break;
+
+                }
+
+
+                /*
+                    Try lowest quality at
+                    this resolution.
+                */
+
+                showStatus(
+                    "Trying lower resolution..."
+                );
+
+
+                const lowest =
+                    await createPDF(
+                        pdf,
+                        0.10,
+                        scale
+                    );
+
+
+                if (
+                    lowest.size <=
+                    targetBytes
+                ) {
+
+                    bestBlob =
+                        lowest;
+
+                    break;
+
+                }
+
+            }
+
+
+            return bestBlob;
+
+        }
+
+
+
+        /* =========================
+           COMPRESS BUTTON
+        ========================= */
+
+        compressBtn.addEventListener(
+            "click",
+            async function () {
+
+
+                if (!selectedFile) {
+
+                    alert(
+                        "Please select a PDF first."
+                    );
+
+                    return;
+
+                }
+
+
+                let requestedKB =
+                    parseInt(
+                        targetKB.value
+                    );
+
+
+                if (
+                    isNaN(requestedKB) ||
+                    requestedKB < 10
+                ) {
+
+                    alert(
+                        "Please enter a target size of at least 10 KB."
+                    );
+
+                    targetKB.focus();
+
+                    return;
+
+                }
+
+
+                const targetBytes =
+                    requestedKB *
+                    1024;
+
+
+                /*
+                    If original is already
+                    smaller than target.
+                */
+
+                if (
+                    selectedFile.size <=
+                    targetBytes
+                ) {
+
+                    compressedBlob =
+                        await makeExactSize(
+                            selectedFile,
+                            targetBytes
+                        );
+
+                    showResult();
+
+                    return;
+
+                }
+
+
+                compressBtn.disabled =
+                    true;
+
+
+                clearBtn.disabled =
+                    true;
+
+
+                result.style.display =
+                    "none";
+
+
+                try {
+
+
+                    showStatus(
+                        "Loading PDF..."
+                    );
+
+
+                    const pdf =
+                        await loadPDF(
+                            selectedFile
+                        );
+
+
+                    /*
+                        Try to reach target
+                    */
+
+                    const resultBlob =
+                        await compressToTarget(
+                            pdf,
+                            targetBytes
+                        );
+
+
+                    if (!resultBlob) {
+
+                        /*
+                            Even the strongest
+                            compression could not
+                            reach the target.
+                        */
+
+                        alert(
+                            "This PDF cannot be reduced to " +
+                            requestedKB +
+                            " KB without further quality loss."
+                        );
+
+
+                        showStatus(
+                            "Target size could not be reached."
+                        );
+
+
+                        compressBtn.disabled =
+                            false;
+
+
+                        clearBtn.disabled =
+                            false;
+
+
+                        return;
+
+                    }
+
+
+                    /*
+                        Now make EXACT target
+                    */
+
+                    compressedBlob =
+                        await makeExactSize(
+                            resultBlob,
+                            targetBytes
+                        );
+
+
+                    showResult();
+
+
+                } catch (error) {
+
+                    console.error(
+                        error
+                    );
+
+
+                    alert(
+                        "PDF compression failed. Please try another PDF."
+                    );
+
+
+                    showStatus(
+                        "Compression failed."
+                    );
+
+                }
+
+
+                compressBtn.disabled =
+                    false;
+
+
+                clearBtn.disabled =
+                    false;
+
+            }
+        );
+
+
+
+        /* =========================
+           SHOW RESULT
+        ========================= */
+
+        function showResult() {
+
+            const original =
+                selectedFile.size;
+
+
+            const compressed =
+                compressedBlob.size;
+
+
+            let reduction =
+                0;
+
+
+            if (original > 0) {
+
+                reduction =
+                    (
+                        (
+                            original -
+                            compressed
+                        ) /
+                        original
+                    ) * 100;
+
+            }
+
+
+            resultOriginal.textContent =
+                formatBytes(
+                    original
+                );
+
+
+            resultCompressed.textContent =
+                formatBytes(
+                    compressed
+                );
+
+
+            resultReduction.textContent =
+                Math.max(
+                    0,
+                    reduction
+                ).toFixed(1) +
+                "%";
+
+
+            /*
+                Download URL
+            */
+
+            if (
+                downloadBtn.href &&
+                downloadBtn.href.startsWith(
+                    "blob:"
+                )
+            ) {
+
+                try {
+
+                    URL.revokeObjectURL(
+                        downloadBtn.href
+                    );
+
+                } catch (e) {}
+
+            }
+
+
+            const url =
+                URL.createObjectURL(
+                    compressedBlob
+                );
+
+
+            downloadBtn.href =
+                url;
+
+
+            downloadBtn.download =
+                selectedFile.name.replace(
+                    /\.pdf$/i,
+                    ""
+                ) +
+                "-compressed.pdf";
+
+
+            result.style.display =
+                "block";
+
+
+            showStatus(
+                "Done! Target PDF size: " +
+                targetKB.value +
+                " KB"
+            );
+
+        }
+
+
+
+        /* =========================
+           CLEAR
+        ========================= */
+
+        clearBtn.addEventListener(
+            "click",
+            function () {
+
+
+                if (
+                    downloadBtn.href &&
+                    downloadBtn.href.startsWith(
+                        "blob:"
+                    )
+                ) {
+
+                    try {
+
+                        URL.revokeObjectURL(
+                            downloadBtn.href
+                        );
+
+                    } catch (e) {}
+
+                }
+
+
+                selectedFile =
+                    null;
+
+
+                compressedBlob =
+                    null;
+
+
+                pdfInput.value =
+                    "";
+
+
+                targetKB.value =
+                    "";
+
+
+                fileName.textContent =
+                    "-";
+
+
+                originalSize.textContent =
+                    "Original Size: -";
+
+
+                fileInfo.style.display =
+                    "none";
+
+
+                settingsCard.style.display =
+                    "none";
+
+
+                result.style.display =
+                    "none";
+
+
+                status.style.display =
+                    "none";
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>

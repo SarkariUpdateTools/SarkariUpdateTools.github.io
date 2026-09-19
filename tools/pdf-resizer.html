@@ -1,0 +1,2293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>PDF Resizer - Sarkari Update Tools</title>
+
+
+    <!-- PDF LIB -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+
+    <!-- PDF JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+    <!-- JSPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #111827;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            background: #0d47a1;
+            color: white;
+            padding: 18px 20px 20px;
+            text-align: center;
+        }
+
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+
+        header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .container {
+            width: 92%;
+            max-width: 900px;
+            margin: 25px auto 40px;
+        }
+
+
+        /* =========================
+           BACK HOME
+        ========================= */
+
+        .back-home {
+            display: inline-block;
+            color: #0d47a1;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 25px;
+        }
+
+
+        .back-home:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           CARD
+        ========================= */
+
+        .card {
+            background: white;
+            border: 1px solid #e1e5ea;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+
+        .card h2 {
+            font-size: 19px;
+            margin-bottom: 18px;
+        }
+
+
+        /* =========================
+           FILE INPUT
+        ========================= */
+
+        .field-label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+
+        .file-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px dashed #b8c8dd;
+            border-radius: 7px;
+            background: #fafcff;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+
+        .file-input:hover {
+            border-color: #0d47a1;
+        }
+
+
+        .file-note {
+            color: #64748b;
+            font-size: 12px;
+            margin-top: 7px;
+        }
+
+
+        /* =========================
+           FILE INFO
+        ========================= */
+
+        .file-info {
+            display: none;
+            margin-top: 18px;
+            padding: 13px;
+            background: #f5f7fa;
+            border-radius: 7px;
+            font-size: 14px;
+        }
+
+
+        .file-info strong {
+            display: block;
+            margin-bottom: 5px;
+            word-break: break-word;
+        }
+
+
+        .file-size {
+            color: #64748b;
+        }
+
+
+        /* =========================
+           SETTINGS
+        ========================= */
+
+        .settings-card {
+            display: none;
+        }
+
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+
+        .control-group {
+            margin-bottom: 4px;
+        }
+
+
+        .control-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+
+        select,
+        .target-input {
+            width: 100%;
+            height: 44px;
+            padding: 0 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            background: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+
+        select {
+            cursor: pointer;
+        }
+
+
+        select:focus,
+        .target-input:focus {
+            border-color: #0d47a1;
+        }
+
+
+        .input-hint {
+            color: #64748b;
+            font-size: 12px;
+            margin-top: 7px;
+            line-height: 1.4;
+        }
+
+
+        .info-text {
+            margin-top: 16px;
+            padding: 11px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1d4ed8;
+            border-radius: 7px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .button-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+
+        .resize-btn {
+            flex: 1;
+            height: 40px;
+            border: none;
+            border-radius: 7px;
+            background: #0d47a1;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+
+        .resize-btn:hover {
+            background: #083578;
+        }
+
+
+        .resize-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+
+        .clear-btn {
+            height: 40px;
+            padding: 0 18px;
+            border: none;
+            border-radius: 7px;
+            background: #dc2626;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+
+        .clear-btn:hover {
+            background: #b91c1c;
+        }
+
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .status {
+            display: none;
+            margin-top: 18px;
+            padding: 12px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 7px;
+            color: #1d4ed8;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           RESULT
+        ========================= */
+
+        .result {
+            display: none;
+            margin-top: 18px;
+            padding: 18px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+        }
+
+
+        .result h3 {
+            color: #166534;
+            font-size: 17px;
+            margin-bottom: 13px;
+        }
+
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 8px 0;
+            border-bottom: 1px solid #d9f2df;
+            font-size: 14px;
+        }
+
+
+        .result-row:last-of-type {
+            border-bottom: none;
+        }
+
+
+        .download-btn {
+            display: inline-block;
+            margin-top: 15px;
+            background: #15803d;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+
+        .download-btn:hover {
+            background: #166534;
+        }
+
+
+        /* =========================
+           NOTE
+        ========================= */
+
+        .note {
+            margin-top: 18px;
+            padding: 12px;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 7px;
+            color: #c2410c;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+
+/* ================= YOUTUBE CHANNEL ================= */
+
+.youtube-link {
+    position: absolute;
+    left: 22px;
+    top: 18px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 12px;
+    background: white;
+    color: #111827;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    transition: 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+.youtube-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 14px rgba(0,0,0,0.20);
+}
+.youtube-icon {
+    width: 32px; height: 23px; background: #ff0000; border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; flex-shrink: 0;
+}
+.youtube-icon::after {
+    content: ""; width: 0; height: 0;
+    border-top: 6px solid transparent; border-bottom: 6px solid transparent;
+    border-left: 9px solid white; margin-left: 2px;
+}
+
+/* ================= TELEGRAM CHANNEL ================= */
+
+.telegram-link {
+    position: absolute;
+    right: 22px;
+    top: 18px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 12px;
+    background: white;
+    color: #111827;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    transition: 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+.telegram-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 14px rgba(0,0,0,0.20);
+}
+.telegram-icon {
+    width: 32px; height: 32px; background: #229ED9; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.telegram-icon svg { width: 19px; height: 19px; fill: white; }
+
+.youtube-text, .telegram-text {
+    display: flex; flex-direction: column; align-items: flex-start; line-height: 1.15;
+}
+.youtube-text small, .telegram-text small {
+    font-size: 9px; color: #666; font-weight: 500;
+}
+.youtube-text strong, .telegram-text strong { font-size: 13px; color: #111827; }
+
+@media (max-width: 600px) {
+    .youtube-link { left: 10px; top: 10px; padding: 7px 9px; gap: 7px; font-size: 12px; }
+    .youtube-icon { width: 28px; height: 20px; border-radius: 6px; }
+    .youtube-icon::after {
+        border-top-width: 5px; border-bottom-width: 5px; border-left-width: 8px;
+    }
+    .telegram-link { right: 10px; top: 10px; padding: 5px 8px; gap: 6px; font-size: 12px; }
+    .telegram-icon { width: 27px; height: 27px; }
+    .telegram-icon svg { width: 16px; height: 16px; }
+    .youtube-text small, .telegram-text small { font-size: 8px; }
+    .youtube-text strong, .telegram-text strong { font-size: 12px; }
+    header h1 { margin-top: 28px; }
+}
+@media (max-width: 400px) {
+    .youtube-text small, .telegram-text small { display: none; }
+    .youtube-link { padding: 6px 8px; }
+    .telegram-link { padding: 5px 7px; }
+}
+
+
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 23px;
+            }
+
+
+            .container {
+                width: 94%;
+                margin-top: 20px;
+            }
+
+
+            .card {
+                padding: 18px;
+            }
+
+
+            .settings-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+
+            .button-row {
+                flex-direction: column;
+            }
+
+
+            .resize-btn,
+            .clear-btn {
+                width: 100%;
+            }
+
+
+            .result-row {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <header>
+
+        <!-- YOUTUBE CHANNEL - LEFT -->
+
+        <a
+            href="https://www.youtube.com/@YourSarkariUpdate"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="youtube-link"
+        >
+            <span class="youtube-icon"></span>
+
+            <span class="youtube-text">
+                <small>Visit our YouTube Channel</small>
+                <strong>Sarkari Update</strong>
+            </span>
+        </a>
+
+
+        <!-- TELEGRAM CHANNEL - RIGHT -->
+
+        <a
+            href="https://t.me/YourSarkariUpdate"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="telegram-link"
+        >
+            <span class="telegram-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21.8 3.2L18.7 20c-.2 1.2-.9 1.5-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.2-8.3c.4-.4-.1-.6-.6-.2L6.1 13.5 1.2 12c-1.1-.3-1.1-1 .2-1.5L20.5 3c.9-.3 1.7.2 1.3.2z"/>
+                </svg>
+            </span>
+
+            <span class="telegram-text">
+                <small>Join our Telegram Channel</small>
+                <strong>Sarkari Update</strong>
+            </span>
+        </a>
+
+
+        <!-- CENTER TITLE -->
+
+        <h1>
+            PDF Resizer
+        </h1>
+
+        <p>
+            Change PDF page size and file size easily
+        </p>
+
+    </header>
+
+
+
+    <main class="container">
+
+
+        <!-- BACK HOME -->
+
+        <a
+            href="../index.html"
+            class="back-home"
+        >
+            ← Back to Home
+        </a>
+
+
+
+        <!-- UPLOAD -->
+
+        <div class="card">
+
+            <h2>
+                Upload PDF
+            </h2>
+
+
+            <label
+                for="pdfInput"
+                class="field-label"
+            >
+                Select PDF
+            </label>
+
+
+            <input
+                type="file"
+                id="pdfInput"
+                class="file-input"
+                accept="application/pdf,.pdf"
+            >
+
+
+            <div class="file-note">
+                PDF files supported
+            </div>
+
+
+            <div
+                class="file-info"
+                id="fileInfo"
+            >
+
+                <strong id="fileName">
+                    -
+                </strong>
+
+                <span
+                    class="file-size"
+                    id="fileSize"
+                >
+                    File Size: -
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- SETTINGS -->
+
+        <div
+            class="card settings-card"
+            id="settingsCard"
+        >
+
+            <h2>
+                Resize Settings
+            </h2>
+
+
+            <div class="settings-grid">
+
+
+                <!-- PAGE SIZE -->
+
+                <div class="control-group">
+
+                    <label for="pageSize">
+                        Page Size
+                    </label>
+
+                    <select id="pageSize">
+
+                        <option value="a4">
+                            A4
+                        </option>
+
+                        <option value="a3">
+                            A3
+                        </option>
+
+                        <option value="letter">
+                            Letter
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- ORIENTATION -->
+
+                <div class="control-group">
+
+                    <label for="orientation">
+                        Orientation
+                    </label>
+
+                    <select id="orientation">
+
+                        <option value="portrait">
+                            Portrait
+                        </option>
+
+                        <option value="landscape">
+                            Landscape
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- FIT -->
+
+                <div class="control-group">
+
+                    <label for="fitMode">
+                        Content Fit
+                    </label>
+
+                    <select id="fitMode">
+
+                        <option value="contain">
+                            Fit Content
+                        </option>
+
+                        <option value="stretch">
+                            Stretch to Page
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- ALIGNMENT -->
+
+                <div class="control-group">
+
+                    <label for="alignment">
+                        Alignment
+                    </label>
+
+                    <select id="alignment">
+
+                        <option value="center">
+                            Center
+                        </option>
+
+                        <option value="top">
+                            Top
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- TARGET KB -->
+
+                <div class="control-group">
+
+                    <label for="targetKB">
+                        Target PDF Size (KB)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="targetKB"
+                        class="target-input"
+                        min="10"
+                        step="1"
+                        placeholder="Example: 100"
+                    >
+
+                    <div class="input-hint">
+                        Leave blank if you only want to change the page size.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="info-text">
+
+                Choose A4, A3 or Letter page size.
+                You can also enter a target PDF size in KB.
+
+            </div>
+
+
+
+            <!-- BUTTONS -->
+
+            <div class="button-row">
+
+                <button
+                    type="button"
+                    class="resize-btn"
+                    id="resizeBtn"
+                >
+                    Resize PDF
+                </button>
+
+
+                <button
+                    type="button"
+                    class="clear-btn"
+                    id="clearBtn"
+                >
+                    Clear
+                </button>
+
+            </div>
+
+
+
+            <!-- STATUS -->
+
+            <div
+                class="status"
+                id="status"
+            >
+                Ready.
+            </div>
+
+
+
+            <!-- RESULT -->
+
+            <div
+                class="result"
+                id="result"
+            >
+
+                <h3>
+                    PDF Resized Successfully
+                </h3>
+
+
+                <div class="result-row">
+
+                    <span>
+                        Page Size
+                    </span>
+
+                    <strong id="resultPageSize">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="result-row">
+
+                    <span>
+                        Orientation
+                    </span>
+
+                    <strong id="resultOrientation">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="result-row">
+
+                    <span>
+                        Pages
+                    </span>
+
+                    <strong id="resultPages">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="result-row">
+
+                    <span>
+                        Final File Size
+                    </span>
+
+                    <strong id="resultFileSize">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <a
+                    href="#"
+                    id="downloadBtn"
+                    class="download-btn"
+                    download="resized-pdf.pdf"
+                >
+                    ⬇ Download Resized PDF
+                </a>
+
+            </div>
+
+
+
+            <!-- NOTE -->
+
+            <div class="note">
+
+                <strong>Note:</strong>
+                If a Target PDF Size is entered, the PDF may be converted
+                into optimized images to achieve the requested file size.
+                Text may no longer remain selectable in that mode.
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+
+    <script>
+
+
+        /* =========================
+           PDF.JS WORKER
+        ========================= */
+
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+            "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+
+
+        /* =========================
+           ELEMENTS
+        ========================= */
+
+        const pdfInput =
+            document.getElementById("pdfInput");
+
+        const fileInfo =
+            document.getElementById("fileInfo");
+
+        const fileName =
+            document.getElementById("fileName");
+
+        const fileSize =
+            document.getElementById("fileSize");
+
+        const settingsCard =
+            document.getElementById("settingsCard");
+
+        const pageSize =
+            document.getElementById("pageSize");
+
+        const orientation =
+            document.getElementById("orientation");
+
+        const fitMode =
+            document.getElementById("fitMode");
+
+        const alignment =
+            document.getElementById("alignment");
+
+        const targetKB =
+            document.getElementById("targetKB");
+
+        const resizeBtn =
+            document.getElementById("resizeBtn");
+
+        const clearBtn =
+            document.getElementById("clearBtn");
+
+        const status =
+            document.getElementById("status");
+
+        const result =
+            document.getElementById("result");
+
+        const resultPageSize =
+            document.getElementById("resultPageSize");
+
+        const resultOrientation =
+            document.getElementById("resultOrientation");
+
+        const resultPages =
+            document.getElementById("resultPages");
+
+        const resultFileSize =
+            document.getElementById("resultFileSize");
+
+        const downloadBtn =
+            document.getElementById("downloadBtn");
+
+
+        let selectedFile = null;
+
+        let outputBlob = null;
+
+
+
+        /* =========================
+           FORMAT SIZE
+        ========================= */
+
+        function formatBytes(bytes) {
+
+            if (bytes < 1024) {
+
+                return bytes + " B";
+
+            }
+
+
+            if (bytes < 1024 * 1024) {
+
+                return (
+                    bytes / 1024
+                ).toFixed(2) + " KB";
+
+            }
+
+
+            return (
+                bytes / (1024 * 1024)
+            ).toFixed(2) + " MB";
+
+        }
+
+
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        function showStatus(message) {
+
+            status.style.display =
+                "block";
+
+            status.textContent =
+                message;
+
+        }
+
+
+
+        /* =========================
+           PAGE SIZE
+        ========================= */
+
+        function getPageSize() {
+
+            const sizes = {
+
+                a4: {
+                    width: 595.28,
+                    height: 841.89,
+                    name: "A4"
+                },
+
+                a3: {
+                    width: 841.89,
+                    height: 1190.55,
+                    name: "A3"
+                },
+
+                letter: {
+                    width: 612,
+                    height: 792,
+                    name: "Letter"
+                }
+
+            };
+
+
+            const selected =
+                sizes[
+                    pageSize.value
+                ];
+
+
+            let width =
+                selected.width;
+
+
+            let height =
+                selected.height;
+
+
+            if (
+                orientation.value ===
+                "landscape"
+            ) {
+
+                const temp =
+                    width;
+
+                width =
+                    height;
+
+                height =
+                    temp;
+
+            }
+
+
+            return {
+
+                width:
+                    width,
+
+                height:
+                    height,
+
+                name:
+                    selected.name
+
+            };
+
+        }
+
+
+
+        /* =========================
+           SELECT PDF
+        ========================= */
+
+        pdfInput.addEventListener(
+            "change",
+            function () {
+
+                const file =
+                    this.files[0];
+
+
+                if (!file) {
+                    return;
+                }
+
+
+                if (
+                    file.type !==
+                    "application/pdf" &&
+                    !file.name
+                        .toLowerCase()
+                        .endsWith(".pdf")
+                ) {
+
+                    alert(
+                        "Please select a PDF file."
+                    );
+
+                    pdfInput.value =
+                        "";
+
+                    return;
+
+                }
+
+
+                selectedFile =
+                    file;
+
+
+                fileName.textContent =
+                    file.name;
+
+
+                fileSize.textContent =
+                    "File Size: " +
+                    formatBytes(
+                        file.size
+                    );
+
+
+                fileInfo.style.display =
+                    "block";
+
+
+                settingsCard.style.display =
+                    "block";
+
+
+                result.style.display =
+                    "none";
+
+
+                showStatus(
+                    "PDF selected. Choose your resize settings."
+                );
+
+            }
+        );
+
+
+
+        /* =========================
+           NORMAL RESIZE
+        ========================= */
+
+        async function resizeNormalPDF() {
+
+            const {
+                PDFDocument
+            } = PDFLib;
+
+
+            const sourceBytes =
+                await selectedFile.arrayBuffer();
+
+
+            const sourcePDF =
+                await PDFDocument.load(
+                    sourceBytes
+                );
+
+
+            const outputPDF =
+                await PDFDocument.create();
+
+
+            const pages =
+                sourcePDF.getPages();
+
+
+            const target =
+                getPageSize();
+
+
+            for (
+                let i = 0;
+                i < pages.length;
+                i++
+            ) {
+
+                showStatus(
+                    "Resizing page " +
+                    (i + 1) +
+                    " of " +
+                    pages.length +
+                    "..."
+                );
+
+
+                const sourcePage =
+                    pages[i];
+
+
+                const sourceWidth =
+                    sourcePage.getWidth();
+
+
+                const sourceHeight =
+                    sourcePage.getHeight();
+
+
+                const copied =
+                    await outputPDF.copyPages(
+                        sourcePDF,
+                        [i]
+                    );
+
+
+                const newPage =
+                    copied[0];
+
+
+                outputPDF.addPage(
+                    newPage
+                );
+
+
+                let scaleX =
+                    target.width /
+                    sourceWidth;
+
+
+                let scaleY =
+                    target.height /
+                    sourceHeight;
+
+
+                let finalScaleX =
+                    scaleX;
+
+
+                let finalScaleY =
+                    scaleY;
+
+
+                if (
+                    fitMode.value ===
+                    "contain"
+                ) {
+
+                    const scale =
+                        Math.min(
+                            scaleX,
+                            scaleY
+                        );
+
+
+                    finalScaleX =
+                        scale;
+
+
+                    finalScaleY =
+                        scale;
+
+                }
+
+
+                newPage.scaleContent(
+                    finalScaleX,
+                    finalScaleY
+                );
+
+
+                newPage.setSize(
+                    target.width,
+                    target.height
+                );
+
+
+                const finalWidth =
+                    sourceWidth *
+                    finalScaleX;
+
+
+                const finalHeight =
+                    sourceHeight *
+                    finalScaleY;
+
+
+                let offsetX =
+                    (
+                        target.width -
+                        finalWidth
+                    ) / 2;
+
+
+                let offsetY =
+                    (
+                        target.height -
+                        finalHeight
+                    ) / 2;
+
+
+                if (
+                    alignment.value ===
+                    "top"
+                ) {
+
+                    offsetY =
+                        target.height -
+                        finalHeight;
+
+                }
+
+
+                newPage.translateContent(
+                    offsetX,
+                    offsetY
+                );
+
+            }
+
+
+            const bytes =
+                await outputPDF.save({
+                    useObjectStreams:
+                        true
+                });
+
+
+            return new Blob(
+                [bytes],
+                {
+                    type:
+                        "application/pdf"
+                }
+            );
+
+        }
+
+
+
+        /* =========================
+           RENDER PAGE
+        ========================= */
+
+        async function renderPage(
+            page,
+            scale,
+            quality
+        ) {
+
+            const viewport =
+                page.getViewport({
+                    scale: scale
+                });
+
+
+            const canvas =
+                document.createElement(
+                    "canvas"
+                );
+
+
+            const context =
+                canvas.getContext(
+                    "2d",
+                    {
+                        alpha: false
+                    }
+                );
+
+
+            canvas.width =
+                Math.max(
+                    1,
+                    Math.floor(
+                        viewport.width
+                    )
+                );
+
+
+            canvas.height =
+                Math.max(
+                    1,
+                    Math.floor(
+                        viewport.height
+                    )
+                );
+
+
+            context.fillStyle =
+                "#ffffff";
+
+
+            context.fillRect(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+
+            await page.render({
+
+                canvasContext:
+                    context,
+
+                viewport:
+                    viewport
+
+            }).promise;
+
+
+            return canvas.toDataURL(
+                "image/jpeg",
+                quality
+            );
+
+        }
+
+
+
+        /* =========================
+           CREATE TARGET SIZE PDF
+        ========================= */
+
+        async function createTargetPDF(
+            pdf,
+            quality,
+            scale
+        ) {
+
+            const {
+                jsPDF
+            } = window.jspdf;
+
+
+            const target =
+                getPageSize();
+
+
+            let outputPDF =
+                null;
+
+
+            for (
+                let i = 1;
+                i <= pdf.numPages;
+                i++
+            ) {
+
+                showStatus(
+                    "Optimizing page " +
+                    i +
+                    " of " +
+                    pdf.numPages +
+                    "..."
+                );
+
+
+                const page =
+                    await pdf.getPage(i);
+
+
+                const image =
+                    await renderPage(
+                        page,
+                        scale,
+                        quality
+                    );
+
+
+                const orientationMode =
+                    target.width >
+                    target.height
+                        ? "landscape"
+                        : "portrait";
+
+
+                if (!outputPDF) {
+
+                    outputPDF =
+                        new jsPDF({
+
+                            orientation:
+                                orientationMode,
+
+                            unit:
+                                "pt",
+
+                            format: [
+                                target.width,
+                                target.height
+                            ],
+
+                            compress:
+                                true
+
+                        });
+
+                } else {
+
+                    outputPDF.addPage(
+                        [
+                            target.width,
+                            target.height
+                        ],
+                        orientationMode
+                    );
+
+                }
+
+
+                /*
+                    Fit image into selected
+                    page size.
+                */
+
+                const imageAspect =
+                    page.getViewport({
+                        scale: 1
+                    }).width /
+                    page.getViewport({
+                        scale: 1
+                    }).height;
+
+
+                const pageAspect =
+                    target.width /
+                    target.height;
+
+
+                let drawWidth =
+                    target.width;
+
+
+                let drawHeight =
+                    target.height;
+
+
+                if (
+                    fitMode.value ===
+                    "contain"
+                ) {
+
+                    if (
+                        imageAspect >
+                        pageAspect
+                    ) {
+
+                        drawWidth =
+                            target.width;
+
+                        drawHeight =
+                            target.width /
+                            imageAspect;
+
+                    } else {
+
+                        drawHeight =
+                            target.height;
+
+                        drawWidth =
+                            target.height *
+                            imageAspect;
+
+                    }
+
+                }
+
+
+                if (
+                    alignment.value ===
+                    "center"
+                ) {
+
+                    const x =
+                        (
+                            target.width -
+                            drawWidth
+                        ) / 2;
+
+
+                    const y =
+                        (
+                            target.height -
+                            drawHeight
+                        ) / 2;
+
+
+                    outputPDF.addImage(
+                        image,
+                        "JPEG",
+                        x,
+                        y,
+                        drawWidth,
+                        drawHeight,
+                        undefined,
+                        "FAST"
+                    );
+
+                } else {
+
+                    const x =
+                        (
+                            target.width -
+                            drawWidth
+                        ) / 2;
+
+
+                    const y =
+                        target.height -
+                        drawHeight;
+
+
+                    outputPDF.addImage(
+                        image,
+                        "JPEG",
+                        x,
+                        y,
+                        drawWidth,
+                        drawHeight,
+                        undefined,
+                        "FAST"
+                    );
+
+                }
+
+            }
+
+
+            return outputPDF.output(
+                "blob"
+            );
+
+        }
+
+
+
+        /* =========================
+           TARGET SIZE SEARCH
+        ========================= */
+
+        async function compressToTarget(
+            pdf,
+            targetBytes
+        ) {
+
+            const scales = [
+                1.50,
+                1.25,
+                1.10,
+                1.00,
+                0.90,
+                0.80,
+                0.70,
+                0.60,
+                0.50
+            ];
+
+
+            let best =
+                null;
+
+
+            for (
+                let s = 0;
+                s < scales.length;
+                s++
+            ) {
+
+                const scale =
+                    scales[s];
+
+
+                let low =
+                    0.10;
+
+
+                let high =
+                    0.90;
+
+
+                let found =
+                    null;
+
+
+                for (
+                    let i = 0;
+                    i < 7;
+                    i++
+                ) {
+
+                    const quality =
+                        (
+                            low +
+                            high
+                        ) / 2;
+
+
+                    const blob =
+                        await createTargetPDF(
+                            pdf,
+                            quality,
+                            scale
+                        );
+
+
+                    showStatus(
+                        "Finding target size... " +
+                        Math.round(
+                            quality * 100
+                        ) +
+                        "% quality"
+                    );
+
+
+                    if (
+                        blob.size <=
+                        targetBytes
+                    ) {
+
+                        found =
+                            blob;
+
+                        low =
+                            quality;
+
+                    } else {
+
+                        high =
+                            quality;
+
+                    }
+
+                }
+
+
+                if (found) {
+
+                    best =
+                        found;
+
+                    break;
+
+                }
+
+
+                /*
+                    Try lowest quality.
+                */
+
+                const lowest =
+                    await createTargetPDF(
+                        pdf,
+                        0.10,
+                        scale
+                    );
+
+
+                if (
+                    lowest.size <=
+                    targetBytes
+                ) {
+
+                    best =
+                        lowest;
+
+                    break;
+
+                }
+
+            }
+
+
+            return best;
+
+        }
+
+
+
+        /* =========================
+           EXACT TARGET PADDING
+        ========================= */
+
+        async function makeExactSize(
+            blob,
+            targetBytes
+        ) {
+
+            if (
+                blob.size >=
+                targetBytes
+            ) {
+
+                return blob;
+
+            }
+
+
+            const extra =
+                targetBytes -
+                blob.size;
+
+
+            const padding =
+                new Uint8Array(
+                    extra
+                );
+
+
+            padding.fill(32);
+
+
+            return new Blob(
+                [
+                    blob,
+                    padding
+                ],
+                {
+                    type:
+                        "application/pdf"
+                }
+            );
+
+        }
+
+
+
+        /* =========================
+           RESIZE BUTTON
+        ========================= */
+
+        resizeBtn.addEventListener(
+            "click",
+            async function () {
+
+                if (!selectedFile) {
+
+                    alert(
+                        "Please select a PDF first."
+                    );
+
+                    return;
+
+                }
+
+
+                let requestedKB =
+                    parseInt(
+                        targetKB.value
+                    );
+
+
+                const hasTarget =
+                    !isNaN(
+                        requestedKB
+                    ) &&
+                    requestedKB >= 10;
+
+
+                if (
+                    targetKB.value.trim() !== "" &&
+                    !hasTarget
+                ) {
+
+                    alert(
+                        "Please enter a valid target size of at least 10 KB."
+                    );
+
+                    targetKB.focus();
+
+                    return;
+
+                }
+
+
+                resizeBtn.disabled =
+                    true;
+
+
+                clearBtn.disabled =
+                    true;
+
+
+                result.style.display =
+                    "none";
+
+
+                try {
+
+
+                    /*
+                        NORMAL MODE
+                    */
+
+                    if (!hasTarget) {
+
+                        showStatus(
+                            "Resizing PDF..."
+                        );
+
+
+                        outputBlob =
+                            await resizeNormalPDF();
+
+                    }
+
+
+                    /*
+                        TARGET KB MODE
+                    */
+
+                    else {
+
+                        const targetBytes =
+                            requestedKB *
+                            1024;
+
+
+                        /*
+                            If original is already
+                            smaller than target,
+                            normal resize first.
+                        */
+
+                        if (
+                            selectedFile.size <=
+                            targetBytes
+                        ) {
+
+                            showStatus(
+                                "Resizing PDF..."
+                            );
+
+
+                            outputBlob =
+                                await resizeNormalPDF();
+
+
+                            /*
+                                Don't increase
+                                an already small PDF.
+                            */
+
+                            if (
+                                outputBlob.size >
+                                targetBytes
+                            ) {
+
+                                const pdfjs =
+                                    await pdfjsLib
+                                        .getDocument({
+                                            data:
+                                                await selectedFile
+                                                    .arrayBuffer()
+                                        })
+                                        .promise;
+
+
+                                outputBlob =
+                                    await compressToTarget(
+                                        pdfjs,
+                                        targetBytes
+                                    );
+
+                            }
+
+                        } else {
+
+
+                            showStatus(
+                                "Loading PDF for target size..."
+                            );
+
+
+                            const pdfjs =
+                                await pdfjsLib
+                                    .getDocument({
+                                        data:
+                                            await selectedFile
+                                                .arrayBuffer()
+                                    })
+                                    .promise;
+
+
+                            outputBlob =
+                                await compressToTarget(
+                                    pdfjs,
+                                    targetBytes
+                                );
+
+
+                            if (!outputBlob) {
+
+                                alert(
+                                    "This PDF cannot be reduced to the requested KB size without significant quality loss."
+                                );
+
+
+                                showStatus(
+                                    "Target size could not be reached."
+                                );
+
+
+                                resizeBtn.disabled =
+                                    false;
+
+                                clearBtn.disabled =
+                                    false;
+
+                                return;
+
+                            }
+
+
+                            outputBlob =
+                                await makeExactSize(
+                                    outputBlob,
+                                    targetBytes
+                                );
+
+                        }
+
+                    }
+
+
+
+                    /* =====================
+                       DOWNLOAD
+                    ===================== */
+
+                    if (
+                        downloadBtn.href &&
+                        downloadBtn.href.startsWith(
+                            "blob:"
+                        )
+                    ) {
+
+                        try {
+
+                            URL.revokeObjectURL(
+                                downloadBtn.href
+                            );
+
+                        } catch (e) {}
+
+                    }
+
+
+                    const url =
+                        URL.createObjectURL(
+                            outputBlob
+                        );
+
+
+                    downloadBtn.href =
+                        url;
+
+
+                    downloadBtn.download =
+                        selectedFile.name.replace(
+                            /\.pdf$/i,
+                            ""
+                        ) +
+                        "-resized.pdf";
+
+
+
+                    /* =====================
+                       RESULT
+                    ===================== */
+
+                    const target =
+                        getPageSize();
+
+
+                    resultPageSize.textContent =
+                        target.name;
+
+
+                    resultOrientation.textContent =
+                        orientation.value ===
+                        "portrait"
+                            ? "Portrait"
+                            : "Landscape";
+
+
+                    const pdfInfo =
+                        await pdfjsLib
+                            .getDocument({
+                                data:
+                                    await outputBlob
+                                        .arrayBuffer()
+                            })
+                            .promise;
+
+
+                    resultPages.textContent =
+                        pdfInfo.numPages;
+
+
+                    resultFileSize.textContent =
+                        formatBytes(
+                            outputBlob.size
+                        );
+
+
+                    result.style.display =
+                        "block";
+
+
+                    if (hasTarget) {
+
+                        showStatus(
+                            "Done! Target size: " +
+                            requestedKB +
+                            " KB"
+                        );
+
+                    } else {
+
+                        showStatus(
+                            "PDF resized successfully."
+                        );
+
+                    }
+
+
+                } catch (error) {
+
+                    console.error(
+                        error
+                    );
+
+
+                    alert(
+                        "PDF resizing failed. Please try another PDF."
+                    );
+
+
+                    showStatus(
+                        "PDF resizing failed."
+                    );
+
+                }
+
+
+                resizeBtn.disabled =
+                    false;
+
+
+                clearBtn.disabled =
+                    false;
+
+            }
+        );
+
+
+
+        /* =========================
+           CLEAR
+        ========================= */
+
+        clearBtn.addEventListener(
+            "click",
+            function () {
+
+
+                if (
+                    downloadBtn.href &&
+                    downloadBtn.href.startsWith(
+                        "blob:"
+                    )
+                ) {
+
+                    try {
+
+                        URL.revokeObjectURL(
+                            downloadBtn.href
+                        );
+
+                    } catch (e) {}
+
+                }
+
+
+                selectedFile =
+                    null;
+
+
+                outputBlob =
+                    null;
+
+
+                pdfInput.value =
+                    "";
+
+
+                targetKB.value =
+                    "";
+
+
+                fileName.textContent =
+                    "-";
+
+
+                fileSize.textContent =
+                    "File Size: -";
+
+
+                fileInfo.style.display =
+                    "none";
+
+
+                settingsCard.style.display =
+                    "none";
+
+
+                result.style.display =
+                    "none";
+
+
+                status.style.display =
+                    "none";
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
